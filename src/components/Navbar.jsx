@@ -7,7 +7,6 @@ import { IoSearch } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
-import GoogleTranslate from "./Translate";
 
 export default function Navbar({
   arr,
@@ -207,7 +206,6 @@ export default function Navbar({
         </li>
         
         <li>
-        <GoogleTranslate />
         </li>
       </ul>
     </div>
