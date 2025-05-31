@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f9fafb;
+  --color-secondary: #ffcf0e;
+  --color-tertiary: #f3f4f6;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.goog-te-gadget-simple {
+  background-color: #fff !important;
+  border: 2px solid #99a1af !important;
+  padding: 5px 10px !important;
+  cursor: pointer;
+}
+
+.goog-te-gadget-simple img {
+  display: none !important;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes heart-press {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.7); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.animate-heart {
+  animation: heart-press 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.5) rotate(5deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(0.5) rotate(5deg);
+  }
+}
+
+.animate-blink {
+  animation: blink 0.6s alternate infinite linear;
+}
+
+@keyframes typing-circle {
+  0% {
+    top: 10px;
+    height: 5px;
+    border-radius: 50px 50px 25px 25px;
+    transform: scaleX(1.7);
+  }
+  40% {
+    height: 8px;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+@keyframes typing-shadow {
+  0% {
+    transform: scaleX(1.5);
+  }
+  40% {
+    transform: scaleX(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scaleX(0.2);
+    opacity: 0.4;
+  }
+}
+
+.animate-typing-circle {
+  animation: typing-circle 0.5s alternate infinite ease;
+}
+
+.animate-typing-circle-delay-1 {
+  animation: typing-circle 0.5s alternate infinite ease;
+  animation-delay: 0.2s;
+}
+
+.animate-typing-circle-delay-2 {
+  animation: typing-circle 0.5s alternate infinite ease;
+  animation-delay: 0.3s;
+}
+
+.animate-typing-shadow {
+  animation: typing-shadow 0.5s alternate infinite ease;
+}
+
+.animate-typing-shadow-delay-1 {
+  animation: typing-shadow 0.5s alternate infinite ease;
+  animation-delay: 0.2s;
+}
+
+.animate-typing-shadow-delay-2 {
+  animation: typing-shadow 0.5s alternate infinite ease;
+  animation-delay: 0.3s;
+}

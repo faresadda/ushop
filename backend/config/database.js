@@ -1,0 +1,5 @@
+const mongoose=require('mongoose')
+require('dotenv').config()
+mongoose.connect(process.env.database_url)
+   .then(()=>{console.log('Database connection successeful')})
+   .catch((err)=>{console.log('Error : database connection failed')})
