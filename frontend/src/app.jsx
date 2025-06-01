@@ -10,15 +10,7 @@ export default function App() {
   return (
       <Routes>
         <Route path="/*" element={<>
-          <ToastContainer position="top-center" autoClose={2000} limit={3} 
-                          style={{
-                            "@media (max-width: 500px)": {
-                              width: "80%"
-                            },
-                            left:"50%",
-                            transform: "translateX(-50%)",
-                            top:"50px"
-                          }}/>
+          <ToastContainer position="top-center" autoClose={2000} limit={3} />
           <User />
           </>} />
         <Route path="account/*" element={<>

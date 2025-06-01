@@ -16,6 +16,7 @@ import Favorites from "../pages/user/Favorites";
 import Options from "../pages/user/Options"
 import Confirmation from "../components/Confirmation";
 import ProtectedProfile from "../components/ProtectedProfile";
+import Brands from "../pages/user/Brands";
 
 export default function User() {
   const {token,confirmation,setConfirmation,logOut}=useUserContext()
@@ -49,6 +50,7 @@ export default function User() {
             <>
               <Home />
               <Categories />
+              <Brands />
               <Products />
               <Options />
             </>

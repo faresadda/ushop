@@ -35,7 +35,7 @@ export default function Categories() {
                   <h3 className="font-bold text-gray-800 text-xl mb-2">{cat.card.cardTitle}</h3>
                   <div className="text-gray-600 mb-1">{cat.title}</div>
                   <div className="text-gray-500 text-sm mb-4">{cat.card.cardSubtitle}</div>
-                  <button className={`${cat.card.btn} px-6 py-2 rounded-full text-sm font-bold transition-colors flex items-center justify-center sm:justify-start gap-2 w-full sm:w-auto`}>
+                  <button className={`${cat.card.btn} px-6 py-2 rounded-full text-sm font-bold transition-colors flex items-center justify-center sm:justify-start gap-2 mx-auto`}>
                     Shop Collection
                     <FaArrowRight />
                   </button>
