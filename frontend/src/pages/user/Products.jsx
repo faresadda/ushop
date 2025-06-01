@@ -12,7 +12,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { BsGrid3X3Gap, BsListUl } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-export default function Products() {
+export default function Products({style}) {
   const { products, setIndex, categories, favorites, setFavorites } = useProductsContext();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("All Products");
@@ -72,11 +72,11 @@ export default function Products() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
               <h1 className="text-3xl font-bold text-gray-900 mb-3">Our Collection</h1>
-              <p className="text-gray-600 max-w-xl">
+              <p className={`text-gray-600 max-w-xl ${style}`}>
                 Discover our carefully curated selection of premium products. 
                 Each item is handpicked for quality, style, and exceptional value.
               </p>
-              <div className="flex items-center gap-6 mt-4">
+              <div className={`flex items-center gap-6 mt-4 ${style}`}>
                 <div className="flex items-center">
                   <FiShoppingBag className="text-green-600 mr-2" />
                   <span className="text-sm font-medium">{totalProducts} Products</span>
@@ -94,7 +94,7 @@ export default function Products() {
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
-                  className="bg-transparent text-sm border-none focus:ring-0 text-gray-700 cursor-pointer"
+                  className="bg-transparent text-sm border-none outline-none focus:ring-0 text-gray-700 cursor-pointer"
                 >
                   <option value="featured">Featured</option>
                   <option value="newest">Newest First</option>

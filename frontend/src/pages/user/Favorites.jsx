@@ -72,7 +72,7 @@ export default function FavoriteProductsPage() {
                   <select 
                     value={sortOption}
                     onChange={(e) => setSortOption(e.target.value)}
-                    className="bg-transparent text-sm border-none focus:ring-0 text-gray-700 cursor-pointer"
+                    className="bg-transparent text-sm border-none outline-none focus:ring-0 text-gray-700 cursor-pointer"
                   >
                     <option value="newest">Recently Added</option>
                     <option value="name">Name A-Z</option>

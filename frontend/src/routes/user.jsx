@@ -57,7 +57,7 @@ export default function User() {
           }
         />
         <Route path="cart" element={<Cart />} />
-        <Route path="products" element={<Products />} />
+        <Route path="products" element={<Products style='hidden'/>} />
         <Route path="shop" element={<Shop />} />
         <Route path="favorites" element={<Favorites />} />
         <Route path="profile" element={
