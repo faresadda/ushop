@@ -90,18 +90,14 @@ const verifyEmail = asyncHandler(async (req, res) => {
       .json(appError.createError(400, "invalid verification code", null));
   }
 
-  await user.save();
   if (type === "activate") {
     user.verificationCode = null;
     user.isVerified = true;
-    res
-      .status(200)
-      .json(appData.createData("email verified successfully", user));
+    await user.save();
+    res.status(200).json(appData.createData("email verified successfully", user));
   } else if (type === "reset") {
     res
-      .status(200)
-      .json(
-        appData.createData("email verified successfully", { id: user._id })
+      .status(200).json(appData.createData("email verified successfully", { id: user._id })
       );
   }
 });

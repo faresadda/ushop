@@ -62,11 +62,10 @@ export default function Profile() {
     { id: "settings", label: "Settings", icon: FaCog },
   ];
 
-  const deleteUserFunction = async (e) => {
-    e.preventDefault();
-    isLoading(true)
+  const deleteUserFunction = async () => {
+    setIsLoading(true)
     const res = await deleteUser(id, currentPassword);
-    isLoading(false)
+    setIsLoading(false)
     setUser(res);
     if (res && res.status === "success") {
       setDeleteAccount(false);
@@ -780,7 +779,8 @@ export default function Profile() {
                   <form
                     className="flex w-full gap-4 flex-col sm:flex-row"
                     onSubmit={(e) => {
-                      deleteUserFunction(e);
+                      e.preventDefault()
+                      deleteUserFunction();
                     }}
                   >
                     <div className="flex-1 w-full">
