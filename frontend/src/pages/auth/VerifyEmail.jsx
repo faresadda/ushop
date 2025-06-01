@@ -2,7 +2,7 @@ import logo from "../../../public/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { verifyEmail } from "../../service/userService";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../context/userContext";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { resendCode } from "../../service/userService";
 import { toast } from "react-toastify";

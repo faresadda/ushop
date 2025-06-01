@@ -3,7 +3,7 @@ import logo from "../../../public/logo.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../service/userService";
 import LoadingSpinner from "../../components/LoadingSpinner";

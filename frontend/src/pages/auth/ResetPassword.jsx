@@ -2,7 +2,7 @@ import logo from "../../../public/logo.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import PasswordInput from "../../components/PasswordInput";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { resetPassword } from "../../service/userService";

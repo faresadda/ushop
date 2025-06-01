@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "../../../public/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../context/userContext";
 import { forgotPassword } from "../../service/userService";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
