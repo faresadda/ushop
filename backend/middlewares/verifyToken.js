@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const appError = require('../utils/appError');
 const asyncHandler=require('express-async-handler')
+require("dotenv").config();
 
 module.exports= asyncHandler((req, res, next) => {
     const authHeader = req.headers['authorization'] || req.headers['Authorization'];

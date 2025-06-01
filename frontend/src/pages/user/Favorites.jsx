@@ -167,11 +167,11 @@ export default function FavoriteProductsPage() {
                     </div>
                     
                     <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                        {product.name.slice(0,20)}{product.name.length > 20 ? '...' : ''}
+                      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 truncate">
+                        {product.name}
                       </h3>
                       
-                      <div className="flex items-center gap-1 mb-2">
+                      <div className="flex items-center gap-1 mb-2 max-[450px]:flex-col max-[450px]:items-start">
                         <div className="flex text-amber-400">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className="w-3 h-3 fill-current" />
