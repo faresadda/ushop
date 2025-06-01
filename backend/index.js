@@ -8,15 +8,7 @@ const appError = require("./utils/appError");
 const cors = require("cors");
 const apikeyMiddleware = require("./middlewares/apikeyMiddleware");
 
-// Configure CORS
-app.use(
-  cors({
-    origin: [process.env.BASE_URL, "http://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 
