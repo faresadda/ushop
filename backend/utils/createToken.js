@@ -5,7 +5,7 @@ const createToken = async (payload) =>{
   const token = await jwt.sign(
     payload,
     process.env.jwt_secret_key, 
-    {expiresIn: process.env.jwt_expire_time}
+    {expiresIn: process.env.JWT_SECRET_KEY}
     )
     return token
 }

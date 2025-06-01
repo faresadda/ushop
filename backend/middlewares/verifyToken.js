@@ -11,7 +11,7 @@ module.exports= asyncHandler((req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const verifyToken = jwt.verify(token, process.env.jwt_secret_key);
+    const verifyToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     next();
     
 })
