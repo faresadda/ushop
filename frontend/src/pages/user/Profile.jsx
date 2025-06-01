@@ -64,7 +64,9 @@ export default function Profile() {
 
   const deleteUserFunction = async (e) => {
     e.preventDefault();
+    isLoading(true)
     const res = await deleteUser(id, currentPassword);
+    isLoading(false)
     setUser(res);
     if (res && res.status === "success") {
       setDeleteAccount(false);
@@ -796,10 +798,10 @@ export default function Profile() {
                   </div>
                   <div className="space-x-4 flex w-full sm:w-fit">
                     <button
-                      className="bg-black text-white px-4 py-2 rounded-lg flex-1"
+                      className="bg-black text-white px-4 py-2 rounded-lg flex-1 flex items-center justify-center gap-2"
                       type="submit"
                     >
-                      Confirm
+                      Confirm {isLoading && <LoadingSpinner />}
                     </button>
                     <button
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg flex-1"
