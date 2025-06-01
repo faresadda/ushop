@@ -190,7 +190,7 @@ export default function Products() {
                     <div className="mt-3 flex flex-col gap-1">
                       <h3 className="font-medium text-gray-800 truncate">{product.name}</h3>
 
-                      <div className="flex items-center gap-1 text-gray-600">
+                      <div className="flex sm:items-center gap-1 text-gray-600 flex-col sm:flex-row">
                         <div className="flex text-amber-400">
                           <FaStar />
                           <FaStar />
