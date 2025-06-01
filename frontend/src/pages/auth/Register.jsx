@@ -40,7 +40,7 @@ export default function Registre() {
       setIsLoading(false);
 
       if (res.status === "success") {
-        localStorage.setItem("id", res.user._id);
+        localStorage.setItem("id", res.data._id);
         setId(localStorage.getItem("id"));
         navigate("/account/verifyemail");
         setMessage("");
@@ -124,7 +124,7 @@ export default function Registre() {
           </div>
         </div>
 
-        <label className="font-medium text-xs -mb-2 place-self-start px-5 text-gray-500">Birthday</label>
+        <label className="font-medium text-xs -mb-2 text-gray-500">Birthday</label>
         <input
           type="date"
           required

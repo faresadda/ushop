@@ -36,7 +36,7 @@ export default function Login() {
         if (res.data.role === "user") {
           navigate("/");
         } else if (res.data.role === "admin") {
-          navigate("/admin");
+          navigate("/admin/dashboard");
         }
       } else {
         navigate("/account/verifyemail");

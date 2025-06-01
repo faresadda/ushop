@@ -26,6 +26,8 @@ export default function Profile() {
     setUser,
     setConfirmation,
     id,
+    setId,
+    setToken,
     isLoading,
     setIsLoading,
     getUserFunction,
@@ -68,6 +70,11 @@ export default function Profile() {
       setDeleteAccount(false);
       navigate("/");
       setDeleteMessage('')
+      setToken('')
+      localStorage.removeItem('token')
+      setId('')
+      localStorage.removeItem('id')
+      toast.success('Account removed successfully')
     }
     else{setDeleteMessage(res.message)}
   };
@@ -769,7 +776,7 @@ export default function Profile() {
               </button>
               {deleteAccount && (
                   <form
-                    className="flex items-start gap-4 flex-col sm:flex-row"
+                    className="flex w-full gap-4 flex-col sm:flex-row"
                     onSubmit={(e) => {
                       deleteUserFunction(e);
                     }}
@@ -787,15 +794,15 @@ export default function Profile() {
                     </p>
                   )}
                   </div>
-                  <div className="space-x-4 w-full flex">
+                  <div className="space-x-4 flex w-full sm:w-fit">
                     <button
-                      className="bg-black text-white px-4 py-2 rounded-lg"
+                      className="bg-black text-white px-4 py-2 rounded-lg flex-1"
                       type="submit"
                     >
                       Confirm
                     </button>
                     <button
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg"
+                      className="px-4 py-2 border-2 border-gray-200 rounded-lg flex-1"
                       onClick={() => {
                         setDeleteAccount(false);
                         setCurrentPassword('')
