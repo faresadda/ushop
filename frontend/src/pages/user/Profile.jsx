@@ -171,7 +171,7 @@ export default function Profile() {
                 <h2 className="text-2xl font-bold text-gray-900">
                   {user.data.firstName} {user.data.lastName}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-xs">
                   joined on{" "}
                   {new Date(user.data.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -395,7 +395,7 @@ export default function Profile() {
               )}
             </div>
 
-            <div className="my-8 flex justify-end gap-4">
+            <div className="my-8 flex justify-end gap-4 max-[450px]:flex-col">
               {isEditing ? (
                 <>
                   <button
@@ -417,7 +417,7 @@ export default function Profile() {
                       setIsLoading(true);
                       updateUserFunction();
                     }}
-                    className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2"
+                    className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
                   >
                     Save Changes {isLoading && <LoadingSpinner />}
                   </button>
@@ -551,7 +551,8 @@ export default function Profile() {
                     key={index}
                     className="border border-gray-200 rounded-lg p-4"
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 max-[450px]:flex-col max-[450px]:items-center">
+                      <div className="flex items-center gap-4 justify-between w-full flex-1">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -567,6 +568,7 @@ export default function Profile() {
                         <p className="text-gray-900 font-medium">
                           ${(item.price * item.quantity).toFixed(2)}
                         </p>
+                      </div>
                       </div>
                       <div className="text-right">
                         <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
@@ -693,7 +695,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              <button className="w-full px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors">
+              <button className="w-full px-2 py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors">
                 + Add New Payment Method
               </button>
             </div>

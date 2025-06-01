@@ -73,7 +73,7 @@ export default function Registre() {
           Your information is protected
         </p>
         <div className="w-[80%] max-[500px]:w-[90%] flex justify-between items-start">
-          <div className="w-[45%]">
+          <div className="w-[47%]">
             <input
               type="text"
               required
@@ -98,7 +98,7 @@ export default function Registre() {
               )}
           </div>
 
-          <div className="w-[45%]">
+          <div className="w-[47%]">
             <input
               type="text"
               required
@@ -124,6 +124,7 @@ export default function Registre() {
           </div>
         </div>
 
+        <label className="font-medium text-xs -mb-2 place-self-start px-5 text-gray-500">Birthday</label>
         <input
           type="date"
           required
@@ -137,7 +138,7 @@ export default function Registre() {
         <div className="flex flex-col w-[80%] max-[500px]:w-[90%]">
           <div className="w-full flex justify-between">
             <label
-              className="flex items-center gap-2 w-[45%] text-gray-500 justify-between border-solid border 
+              className="flex items-center gap-2 w-[47%] text-gray-500 justify-between border-solid border 
             px-4 py-3 text-xs outline-none rounded-[5px] border-gray-200"
             >
               Male
@@ -151,7 +152,7 @@ export default function Registre() {
               />
             </label>
             <label
-              className="flex items-center justify-between text-gray-500 gap-2 w-[45%] border-solid border px-4 py-3
+              className="flex items-center justify-between text-gray-500 gap-2 w-[47%] border-solid border px-4 py-3
              text-xs outline-none rounded-[5px] border-gray-200"
             >
               Female
