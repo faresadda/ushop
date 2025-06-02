@@ -27,7 +27,7 @@ const Home = () => {
       {/* Main content */}
       <div className="container mx-auto px-5 py-5 h-full flex flex-col lg:flex-row items-center justify-between relative z-10">
         <div
-          className={`flex flex-col justify-center gap-8 lg:gap-0 -mt-20 max-w-xl transition-all duration-700 ease-out min-h-screen lg:h-fit ${
+          className={`flex flex-col justify-center gap-8 -mt-20 max-w-xl transition-all duration-700 ease-out min-h-screen lg:h-fit ${
             isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
           }`}
         >

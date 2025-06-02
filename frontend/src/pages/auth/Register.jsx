@@ -124,7 +124,7 @@ export default function Registre() {
           </div>
         </div>
 
-        <label className="font-medium text-xs -mb-2 text-gray-500">Birthday</label>
+        <label className="font-medium text-xs -mb-2 text-gray-500 place-items-start w-[80%] max-[500px]:w-[90%]">Birthday</label>
         <input
           type="date"
           required
@@ -135,6 +135,7 @@ export default function Registre() {
           rounded-[5px] border-gray-200"
         />
 
+        <label className="font-medium text-xs -mb-2 text-gray-500 place-items-start w-[80%] max-[500px]:w-[90%]">Gender</label>
         <div className="flex flex-col w-[80%] max-[500px]:w-[90%]">
           <div className="w-full flex justify-between">
             <label
