@@ -35,7 +35,7 @@ export const useProductsContext = () => {
   return useContext(ProductsContext);
 };
 export function ProductsProvider({ children }) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
 
   useEffect(() => {
     const getProductsFunction = async () => {
