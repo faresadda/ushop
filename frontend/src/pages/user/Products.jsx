@@ -168,7 +168,7 @@ export default function Products({ style }) {
         </div>
 
         {/* Products */}
-        {products && products.data ? (
+        {products ? (
           <div className="mt-8">
             {products.length === 0 ? (
               <div className="text-lg text-red-500 my-20 flex justify-center items-center gap-2 py-10">
