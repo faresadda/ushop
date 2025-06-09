@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "../pages/admin/Dashboard";
+import Dashboard from "../pages/admin/DashboardAdmin";
 import NotFound from "../components/NotFound";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminProfile from "../pages/admin/AdminProfile";
