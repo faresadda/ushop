@@ -5,7 +5,7 @@ const Confirmation = ({
   onClose,
   onConfirm,
   message,
-  confirmText = "Confirm",
+  confirmText,
   cancelText = "Cancel",
   type = "info",
 }) => {
@@ -57,7 +57,7 @@ const Confirmation = ({
           <div className="bg-gray-50 px-6 py-4 flex justify-end gap-3">
             <button
               type="button"
-              className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full sm:w-auto"
+              className="flex justify-center items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full sm:w-auto"
               onClick={onConfirm}
             >
               {confirmText}
@@ -65,8 +65,7 @@ const Confirmation = ({
             <button
               type="button"
               className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full sm:w-auto"
-              onClick={onClose}
-            >
+              onClick={onClose}>
               {cancelText}
             </button>
           </div>

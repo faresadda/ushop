@@ -8,7 +8,6 @@ const createToken = require("../utils/createToken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const appData = require("../utils/appData");
-const { error } = require("console");
 
 //
 const getUser = asyncHandler(async (req, res) => {
@@ -94,10 +93,14 @@ const verifyEmail = asyncHandler(async (req, res) => {
     user.verificationCode = null;
     user.isVerified = true;
     await user.save();
-    res.status(200).json(appData.createData("email verified successfully", user));
+    res
+      .status(200)
+      .json(appData.createData("email verified successfully", user));
   } else if (type === "reset") {
     res
-      .status(200).json(appData.createData("email verified successfully", { id: user._id })
+      .status(200)
+      .json(
+        appData.createData("email verified successfully", { id: user._id })
       );
   }
 });
@@ -332,6 +335,20 @@ const addAddress = asyncHandler(async (req, res) => {
     .json(appData.createData("address added successfully", updateUser));
 });
 
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({role:'user'});
+  res
+    .status(200)
+    .json(appData.createData("Users retrieved successfully", users));
+});
+
+const getAdmins = asyncHandler(async (req, res) => {
+  const admins = await User.find({role:'admin'});
+  res
+    .status(200)
+    .json(appData.createData("Admins retrieved successfully", admins));
+});
+
 module.exports = {
   register,
   login,
@@ -344,5 +361,7 @@ module.exports = {
   resetPassword,
   resendCode,
   addPhone,
-  addAddress
+  addAddress,
+  getUsers,
+  getAdmins
 };

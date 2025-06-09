@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa6";
 
 export default function Cart() {
-  const { cart, setCart, options, setOptions } = useProductsContext();
+  const { cart, setCart, attributes, setAttributes } = useProductsContext();
   const [sortOption, setSortOption] = useState("newest");
   const navigate = useNavigate();
 
@@ -48,14 +48,14 @@ export default function Cart() {
   };
 
   // Function to update product options
-  const updateProductOptions = (index, key, value) => {
+  const updateProductAttributes = (index, key, value) => {
     setCart(() => {
       const newCart = cart.map((item, i) =>
         i === index
           ? {
               ...item,
-              selectedOptions: {
-                ...item.selectedOptions,
+              selectedAttributes: {
+                ...item.selectedAttributes,
                 [key]: value,
               },
             }
@@ -146,8 +146,9 @@ export default function Cart() {
                   <div className="flex flex-col sm:flex-row gap-6 p-6">
                     <div className="relative sm:w-32 sm:h-32 w-full h-48 flex-shrink-0">
                       <img
-                        src={c.image}
+                        src={`${import.meta.env.VITE_BASE_URL}${c.image}`}
                         alt={c.name}
+                        onClick={()=>{navigate(`/product/${c._id}`)}}
                         className="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
@@ -158,29 +159,29 @@ export default function Cart() {
                           {c.name}
                         </h3>
                         <span className="font-bold text-gray-900">
-                          ${(c.price * cart[index].quantity).toFixed(2)}
+                          {(c.price * cart[index].quantity).toFixed(2)} $
                         </span>
                         {/* Product Options */}
                         <div className="flex flex-wrap gap-4 my-4 place-content-start">
-                          {Object.entries(c.options || {}).map(
-                            ([key, value]) => (
-                              <div key={key} className="w-fit">
+                          {c.attributes.map(
+                            (attr, i) => (
+                              <div key={i} className="w-fit">
                                 <label className="block text-sm font-medium text-gray-700 mb-2 capitalize">
-                                  {key}
+                                  {attr.name}
                                 </label>
                                 <select
-                                  value={c.selectedOptions[key]}
+                                  value={c.selectedAttributes[index]?.values}
                                   onChange={(e) => {
-                                    updateProductOptions(
+                                    updateProductAttributes(
                                       index,
-                                      key,
+                                      attr.name,
                                       e.target.value
                                     );
                                   }}
                                   className="w-full px-4 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none text-sm bg-white"
                                 >
-                                  {value.map((v) => (
-                                    <option key={`${key}-${v}`}>{v}</option>
+                                  {attr.values.map((v,i) => (
+                                    <option key={`${i}-${v}`}>{v}</option>
                                   ))}
                                 </select>
                               </div>
@@ -201,7 +202,7 @@ export default function Cart() {
                                 }
                                 className="px-4 py-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                               >
-                                −
+                                -
                               </button>
                               <input
                                 type="number"
@@ -251,17 +252,17 @@ export default function Cart() {
                 <div className="space-y-5 mb-8">
                   <div className="flex justify-between text-gray-600">
                     <span className="text-base">Subtotal</span>
-                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                    <span className="font-medium">{subtotal.toFixed(2)} $</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span className="text-base">Shipping fee</span>
-                    <span className="font-medium">${ship.toFixed(2)}</span>
+                    <span className="font-medium">{ship.toFixed(2)} $</span>
                   </div>
                   <div className="border-t border-gray-200 pt-5">
                     <div className="flex justify-between text-lg font-semibold text-gray-900">
                       <span>Total</span>
                       <span className="text-2xl text-emerald-600">
-                        ${(ship + subtotal).toFixed(2)}
+                        {(ship + subtotal).toFixed(2)} $
                       </span>
                     </div>
                   </div>

@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 export async function register(userData) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/register`, {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export async function register(userData) {
 
 export async function login(userData) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/login`, {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export async function login(userData) {
 export async function verifyEmail(verificationCode, id) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/verifyemail/${id}`,
+      `${import.meta.env.VITE_BASE_URL_API}/verifyemail/${id}`,
       {
         method: "POST",
         headers: {
@@ -71,14 +71,17 @@ export async function verifyEmail(verificationCode, id) {
 
 export async function forgotPassword(email) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/forgotpassword`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": import.meta.env.VITE_MY_API_KEY,
-      },
-      body: JSON.stringify(email),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_BASE_URL_API}/forgotpassword`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": import.meta.env.VITE_MY_API_KEY,
+        },
+        body: JSON.stringify(email),
+      }
+    );
 
     const data = await res.json();
     console.log(data);
@@ -93,7 +96,7 @@ export async function forgotPassword(email) {
 export async function resetPassword(password, id) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/resetpassword/${id}`,
+      `${import.meta.env.VITE_BASE_URL_API}/resetpassword/${id}`,
       {
         method: "POST",
         headers: {
@@ -120,7 +123,7 @@ export async function resetPassword(password, id) {
 export async function resendCode(id) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/resendcode/${id}`,
+      `${import.meta.env.VITE_BASE_URL_API}/resendcode/${id}`,
       {
         method: "PUT",
         headers: {
@@ -140,7 +143,7 @@ export async function resendCode(id) {
 
 export async function getUser(id) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/user/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -161,7 +164,7 @@ export async function getUser(id) {
 
 export async function deleteUser(id, password) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/user/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -182,7 +185,7 @@ export async function deleteUser(id, password) {
 
 export async function updateUser(id, body) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/user/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -201,17 +204,23 @@ export async function updateUser(id, body) {
   }
 }
 
-export async function updatePassword(id,currentPassword,newPassword) {
+export async function updatePassword(id, currentPassword, newPassword) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/updatepassword/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": import.meta.env.VITE_MY_API_KEY,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({password:currentPassword,newPassword:newPassword}),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_BASE_URL_API}/updatepassword/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": import.meta.env.VITE_MY_API_KEY,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          password: currentPassword,
+          newPassword: newPassword,
+        }),
+      }
+    );
     const data = await res.json();
     console.log(data);
     return data;
@@ -222,18 +231,18 @@ export async function updatePassword(id,currentPassword,newPassword) {
   }
 }
 
-export async function addPhone(id,phone) {
+export async function addPhone(id, phone) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/addphone/${id}`,
+      `${import.meta.env.VITE_BASE_URL_API}/addphone/${id}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "x-api-key": import.meta.env.VITE_MY_API_KEY,
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({phone:phone})
+        body: JSON.stringify({ phone: phone }),
       }
     );
     const data = await res.json();
@@ -245,18 +254,18 @@ export async function addPhone(id,phone) {
   }
 }
 
-export async function addAddress(id,address) {
+export async function addAddress(id, address) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/addaddress/${id}`,
+      `${import.meta.env.VITE_BASE_URL_API}/addaddress/${id}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "x-api-key": import.meta.env.VITE_MY_API_KEY,
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({address:address})
+        body: JSON.stringify({ address: address }),
       }
     );
     const data = await res.json();
@@ -265,5 +274,43 @@ export async function addAddress(id,address) {
   } catch (err) {
     console.error("Login error:", err);
     toast.error("Try again");
+  }
+}
+
+export async function getUsers() {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/users`, {
+      method: "GET",
+      headers: {
+        "x-api-key": import.meta.env.VITE_MY_API_KEY,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.error("Get users error:", err);
+    toast.error("Try again");
+    return null;
+  }
+}
+
+export async function getAdmins() {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/admins`, {
+      method: "GET",
+      headers: {
+        "x-api-key": import.meta.env.VITE_MY_API_KEY,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.error("Get users error:", err);
+    toast.error("Try again");
+    return null;
   }
 }

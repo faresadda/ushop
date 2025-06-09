@@ -3,7 +3,10 @@ const router = express.Router();
 const usersService = require("../controllers/userController");
 const userValidator = require("../validators/userValidator");
 const passwordValidator = require("../validators/passwordValidator");
-const verifyToken = require("../middlewares/verifyToken");
+const {
+  authorizationUser,
+  authorizationAdmin,
+} = require("../middlewares/authorization");
 
 router
   .route("/register")
@@ -13,9 +16,9 @@ router.route("/login").post(usersService.login);
 
 router
   .route("/user/:id")
-  .get(verifyToken, usersService.getUser)
-  .put(verifyToken, userValidator, usersService.updateUser)
-  .delete(verifyToken, usersService.deleteUser);
+  .get(authorizationUser, usersService.getUser)
+  .put(authorizationUser, userValidator, usersService.updateUser)
+  .delete(authorizationUser, usersService.deleteUser);
 
 router
   .route("/updatepassword/:id")
@@ -31,8 +34,12 @@ router
 
 router.route("/resendcode/:id").put(usersService.resendCode);
 
-router.route("/addphone/:id").put(verifyToken, usersService.addPhone);
+router.route("/addphone/:id").put(authorizationUser, usersService.addPhone);
 
-router.route("/addaddress/:id").put(verifyToken, usersService.addAddress);
+router.route("/addaddress/:id").put(authorizationUser, usersService.addAddress);
+
+// New route for getting all users (admin only)
+router.route("/users").get(authorizationUser, authorizationAdmin, usersService.getUsers);
+router.route("/admins").get(authorizationUser, authorizationAdmin, usersService.getAdmins);
 
 module.exports = router;

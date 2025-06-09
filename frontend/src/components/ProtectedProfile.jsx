@@ -1,11 +1,16 @@
 import { useUserContext } from "../context/userContext";
-import Profile from "../pages/user/Profile";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 export default function ProtectedProfile({children}) {
-  const { token } = useUserContext();
+  const { id,token,user,getUserFunction } = useUserContext();
+  useEffect(() => {
+    if (id && token ) {
+      getUserFunction();
+    }
+  }, [id, token]);
 
-  if (token) {
+  if (user && user.data) {
     return children
   }
   else{

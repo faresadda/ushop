@@ -7,6 +7,9 @@ import { BsPaypal } from "react-icons/bs";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { useProductsContext } from "../../context/productsContext";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
+import { getProduct } from "../../service/productService";
+import { useParams } from "react-router-dom";
 
 // Sample user reviews data - In a real app, this would come from your backend
 const sampleReviews = [
@@ -30,24 +33,14 @@ const sampleReviews = [
   },
 ];
 
-export default function Shop() {
-  const { products, cart, setCart, index, options, setOptions } =
-    useProductsContext();
+export default function Product() {
+  const { cart, setCart, attributes, setAttributes } = useProductsContext();
+  const [products, setProducts] = useState(null);
   const [qnt, setQnt] = useState(1);
+
   const [newComment, setNewComment] = useState("");
   const [newRating, setNewRating] = useState(5);
   const [reviews, setReviews] = useState(sampleReviews);
-  const subtotal = products[index].price * qnt;
-  const ship = products[index].ship;
-
-  useEffect(() => {
-    // Set default values for options when component mounts
-    const defaultOptions = {};
-    Object.entries(products[index].options).forEach(([key, value]) => {
-      defaultOptions[key] = value[0];
-    });
-    setOptions(defaultOptions);
-  }, [index, products, setOptions]);
 
   const handleAddReview = () => {
     if (newComment.trim()) {
@@ -79,6 +72,46 @@ export default function Shop() {
     ));
   };
 
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      const res = await getProduct(id);
+      if (res && res.data) {
+        setProducts(res.data);
+        // Initialize attributes with default values
+        if (res.data.attributes) {
+          setAttributes(
+            Object.fromEntries(
+              res.data.attributes.map((attr) => [attr.name, attr.values[0]])
+            )
+          );
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="h-screen">
+        <Loader style="top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+      </div>
+    );
+  }
+
+  if (!products) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        Product not found
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
@@ -89,31 +122,26 @@ export default function Shop() {
               {/* Product Image Gallery */}
               <div className="relative aspect-square bg-primary">
                 <img
-                  src={products[index].image}
-                  alt={products[index].name}
+                  src={`${import.meta.env.VITE_BASE_URL}${products.image}`}
+                  alt={products.name}
                   className="w-full h-full object-contain p-4 sm:p-8"
                 />
-                {products[index].discount > 0 && (
-                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-red-500 text-white px-2 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1">
-                    -{products[index].discount}%
+                {products.discount > 0 && (
+                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-red-500 text-white px-2 py-2 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1">
+                    -{products.discount}%
                     <MdOutlineDiscount className="text-base sm:text-lg" />
                   </div>
                 )}
-                <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                  <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                </div>
               </div>
 
               <div className="p-4 sm:p-8 bg-primary">
                 <div className="space-y-4 sm:space-y-6">
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                      {products[index].name}
+                      {products.name}
                     </h1>
                     <p className="text-gray-600 text-sm sm:text-base">
-                      {products[index].description}
+                      {products.description}
                     </p>
                   </div>
 
@@ -122,22 +150,22 @@ export default function Shop() {
                       {renderStars(4.5)}
                     </div>
                     <p className="text-xs sm:text-sm text-gray-500">
-                      4.5 | {products[index].sold} sold
+                      4.5 | 143 sold
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3 sm:gap-4">
                     <span className="text-2xl sm:text-3xl font-bold text-gray-900">
-                      ${products[index].price}
+                      ${products.price}
                     </span>
-                    {products[index].oldPrice && (
+                    {products.oldPrice && (
                       <del className="text-base sm:text-lg text-gray-500">
-                        ${products[index].oldPrice}
+                        ${products.oldPrice}
                       </del>
                     )}
-                    {products[index].discount > 0 && (
+                    {products.discount > 0 && (
                       <span className="bg-amber-100 text-amber-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1">
-                        -{products[index].discount}%
+                        -{products.discount}%
                         <MdOutlineDiscount className="text-base sm:text-lg" />
                       </span>
                     )}
@@ -148,35 +176,37 @@ export default function Shop() {
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                       Product Specifications
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                      {Object.entries(products[index].options).map(
-                        ([key, value]) => (
+                    {products.attributes[0].name && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                        {products.attributes.map((attr, index) => (
                           <div
-                            key={key}
+                            key={index}
                             className="bg-white flex items-center justify-between gap-3 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors"
                           >
                             <h4 className="font-medium text-gray-900 flex items-center gap-2 capitalize">
                               <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                              {key}
+                              {attr.name}
                             </h4>
                             <select
                               className="text-sm text-gray-600 outline-0"
-                              value={options[key] || value[0]}
+                              value={
+                                attributes[index]?.values || attr.values[0]
+                              }
                               onChange={(e) => {
-                                setOptions({
-                                  ...options,
-                                  [key]: e.target.value,
+                                setAttributes({
+                                  ...attributes,
+                                  [attr.name]:e.target.value
                                 });
                               }}
                             >
-                              {value.map((v, i) => {
-                                return <option key={i}>{v}</option>;
-                              })}
+                              {attr.values.map((v, i) => (
+                                <option key={i}>{v}</option>
+                              ))}
                             </select>
                           </div>
-                        ),
-                      )}
-                    </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Quantity Selector */}
@@ -225,16 +255,18 @@ export default function Shop() {
               <div className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between text-gray-600">
                   <p className="text-sm sm:text-base">Subtotal</p>
-                  <p className="font-medium">${subtotal.toFixed(2)}</p>
+                  <p className="font-medium">
+                    {(products.price * qnt).toFixed(2)} $
+                  </p>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <p className="text-sm sm:text-base">Shipping fee</p>
-                  <p className="font-medium">${ship.toFixed(2)}</p>
+                  <p className="font-medium">0,00 $</p>
                 </div>
                 <div className="border-t pt-3 sm:pt-4 flex justify-between text-base sm:text-lg font-bold">
                   <p>Total</p>
                   <p className="text-xl sm:text-2xl text-green-600">
-                    ${(subtotal + ship).toFixed(2)}
+                    {(products.price * qnt ).toFixed(2)} $
                   </p>
                 </div>
               </div>
@@ -264,26 +296,26 @@ export default function Shop() {
                 onClick={() => {
                   setCart(() => {
                     const existingProduct = cart.find(
-                      (item) => item.id === products[index].id,
+                      (item) => item.id === products.id
                     );
                     let cartArray;
                     if (existingProduct) {
                       cartArray = cart.map((item) =>
-                        item.id === products[index].id
+                        item.id === products.id
                           ? {
                               ...item,
                               quantity: item.quantity + qnt,
-                              selectedOptions: options,
+                              selectedAttributes: attributes,
                             }
-                          : item,
+                          : item
                       );
                     } else {
                       cartArray = [
                         ...cart,
                         {
-                          ...products[index],
+                          ...products,
                           quantity: qnt,
-                          selectedOptions: options,
+                          selectedAttributes: attributes,
                         },
                       ];
                     }

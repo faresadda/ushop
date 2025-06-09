@@ -18,20 +18,12 @@ import {
 } from "../../service/userService";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import Confirmation from "../../components/Confirmation";
 
 export default function Profile() {
   const { cart } = useProductsContext();
-  const {
-    user,
-    setUser,
-    setConfirmation,
-    id,
-    setId,
-    setToken,
-    isLoading,
-    setIsLoading,
-    getUserFunction,
-  } = useUserContext();
+  const {user,setUser,confirmation,setConfirmation,logOut,id,setId,setToken,isLoading,setIsLoading,
+    } = useUserContext();
   const [activeTab, setActiveTab] = useState("profile");
   const [isEditing, setIsEditing] = useState(false);
   const [isAddPhone, setIsAddPhone] = useState(false);
@@ -102,17 +94,13 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    const getUser = async () => {
-      const res = await getUserFunction();
-      setFirstName(res.data.firstName);
-      setLastName(res.data.lastName);
-      setEmail(res.data.email);
-      setGender(res.data.gender);
-      setBirthday(res.data.birthday.split("T")[0]);
-      setPhone(res.data.phone)
-      setAddress(res.data.address)
-    };
-    getUser();
+      setFirstName(user.data.firstName);
+      setLastName(user.data.lastName);
+      setEmail(user.data.email);
+      setGender(user.data.gender);
+      setBirthday(user.data.birthday.split("T")[0]);
+      setPhone(user.data.phone)
+      setAddress(user.data.address)
   }, []);
 
   const updatePasswordFunction = async (e) => {
@@ -871,6 +859,14 @@ export default function Profile() {
             </div>
           )}
         </div>
+
+        {confirmation && <Confirmation 
+                isOpen={()=>{return null}}
+                onClose={()=>{setConfirmation(false)}}
+                onConfirm={()=>{logOut()}}
+                message='Do you want to sign out ?'
+                confirmText='Confirm'
+            />}
       </div>
     </div>
   );

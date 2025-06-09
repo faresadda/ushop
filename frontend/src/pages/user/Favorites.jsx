@@ -1,7 +1,7 @@
 import { Heart, Trash2, ShoppingCart, Star, Plus, ShoppingBag, Filter, Grid3X3, List } from "lucide-react";
 import { useProductsContext } from "../../context/productsContext";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function FavoriteProductsPage() {
@@ -12,7 +12,7 @@ export default function FavoriteProductsPage() {
 
   const removeFromFavorites = (id) => {
     setFavorites(() => {
-      const favoritesArray = favorites.filter((product) => product.id !== id);
+      const favoritesArray = favorites.filter((product) => product._id !== id);
       localStorage.setItem('favorites', JSON.stringify(favoritesArray));
       return favoritesArray;
     });
@@ -24,14 +24,6 @@ export default function FavoriteProductsPage() {
       setFavorites([]);
       localStorage.setItem('favorites', JSON.stringify([]));
       toast.success('All favorites cleared');
-    }
-  };
-
-  const goToProduct = (product) => {
-    const productIndex = products.findIndex(p => p.id === product.id);
-    if (productIndex !== -1) {
-      setIndex(productIndex);
-      navigate('/shop');
     }
   };
 
@@ -139,20 +131,20 @@ export default function FavoriteProductsPage() {
               <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {sortedFavorites.map((product) => (
                   <div
-                    key={product.id}
-                    onClick={() => goToProduct(product)}
+                    key={product._id}
+                    onClick={() => navigate(`/product/${product._id}`)}
                     className="bg-primary rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-gray-100 group"
                   >
                     <div className="relative overflow-hidden">
                       <img
-                        src={product.image}
+                        src={`${import.meta.env.VITE_BASE_URL}${product.image}`}
                         alt={product.name}
                         className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          removeFromFavorites(product.id);
+                          removeFromFavorites(product._id);
                         }}
                         className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
                       >
@@ -185,11 +177,11 @@ export default function FavoriteProductsPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className="text-lg font-bold text-gray-900">
-                            ${product.price}
+                            {product.price} $
                           </span>
                           {product.oldPrice && product.oldPrice > product.price && (
                             <span className="text-sm text-gray-500 line-through">
-                              ${product.oldPrice}
+                              {product.oldPrice} $
                             </span>
                           )}
                         </div>
@@ -206,14 +198,14 @@ export default function FavoriteProductsPage() {
               <div className="space-y-4">
                 {sortedFavorites.map((product) => (
                   <div
-                    key={product.id}
-                    onClick={() => goToProduct(product)}
+                    key={product._id}
+                    onClick={() => navigate(`/product/:${productID}`)}
                     className="bg-primary rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100 group"
                   >
                     <div className="flex flex-col sm:flex-row gap-4 p-4">
                       <div className="relative sm:w-32 sm:h-32 w-full h-48 flex-shrink-0">
                         <img
-                          src={product.image}
+                          src={`${import.meta.env.VITE_BASE_URL}${product.image}`}
                           alt={product.name}
                           className="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
                         />
@@ -244,11 +236,11 @@ export default function FavoriteProductsPage() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="text-xl font-bold text-gray-900">
-                              ${product.price}
+                              {product.price} $
                             </span>
                             {product.oldPrice && product.oldPrice > product.price && (
                               <span className="text-sm text-gray-500 line-through">
-                                ${product.oldPrice}
+                                {product.oldPrice} $
                               </span>
                             )}
                           </div>
@@ -257,7 +249,7 @@ export default function FavoriteProductsPage() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                removeFromFavorites(product.id);
+                                removeFromFavorites(product._id);
                               }}
                               className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                             >
