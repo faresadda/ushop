@@ -29,8 +29,8 @@ export default function Products({ style }) {
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts =products?.slice(indexOfFirstProduct, indexOfLastProduct) || [];
-  const totalPages = Math.ceil((products.length || 0) / productsPerPage);
-  const totalProducts = products.length || 0;
+  const totalPages = Math.ceil((products?.length || 0) / productsPerPage);
+  const totalProducts = products?.length || 0;
 
   useEffect(() => {
     setCurrentPage(1);
