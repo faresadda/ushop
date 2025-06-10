@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function AdminProducts() {
-  const { products, setProducts,mode } = useProductsContext();
+  const { products, setProducts } = useProductsContext();
   const [confirmation, setConfirmation] = useState(false);
   const [loading, setLoading] = useState(false);
   const [productID, setProductID] = useState("");

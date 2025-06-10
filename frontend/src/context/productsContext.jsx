@@ -40,7 +40,7 @@ export function ProductsProvider({ children }) {
   useEffect(() => {
     const getProductsFunction = async () => {
       const res = await getProducts();
-      setProducts(res);
+      setProducts(res.data);
     };
     getProductsFunction();
   }, []);
