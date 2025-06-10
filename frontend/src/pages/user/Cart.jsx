@@ -163,7 +163,7 @@ export default function Cart() {
                         </span>
                         {/* Product Options */}
                         <div className="flex flex-wrap gap-4 my-4 place-content-start">
-                          {c.attributes.map(
+                          {c.selectedAttributes && c.attributes.map(
                             (attr, i) => (
                               <div key={i} className="w-fit">
                                 <label className="block text-sm font-medium text-gray-700 mb-2 capitalize">
@@ -235,6 +235,7 @@ export default function Cart() {
                             Remove
                           </button>
                         </div>
+                        
                       </div>
                     </div>
                   </div>

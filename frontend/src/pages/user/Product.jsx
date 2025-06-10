@@ -85,7 +85,7 @@ export default function Product() {
         if (res.data.attributes) {
           setAttributes(
             Object.fromEntries(
-              res.data.attributes.map((attr) => [attr.name, attr.values[0]])
+              res.data.attributes?.map((attr) => [attr.name, attr.values[0]])
             )
           );
         }
@@ -305,7 +305,7 @@ export default function Product() {
                           ? {
                               ...item,
                               quantity: item.quantity + qnt,
-                              selectedAttributes: attributes,
+                              selectedAttributes: attributes[0]?.name ? attributes : null,
                             }
                           : item
                       );
@@ -315,7 +315,7 @@ export default function Product() {
                         {
                           ...products,
                           quantity: qnt,
-                          selectedAttributes: attributes,
+                          selectedAttributes: attributes[0]?.name ? attributes : null,
                         },
                       ];
                     }
