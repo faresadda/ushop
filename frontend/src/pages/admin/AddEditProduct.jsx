@@ -138,10 +138,9 @@ export default function AddProduct() {
       return false;
     });
 
-    if (
-      !formData.oldPrice ||
-      (formData.oldPrice && Number(formData.oldPrice) > Number(formData.price))
+    if (!formData.oldPrice || (formData.oldPrice && Number(formData.oldPrice) > Number(formData.price))
     ) {
+      if(formData.description.length>=8){
       setLoading(true);
       var res;
       if (isEditMode) {
@@ -165,7 +164,8 @@ export default function AddProduct() {
         navigate("/admin/products");
       } else {
         console.log(res.message);
-      }
+      }}
+      else{toast.error('Description must be graeter than 8 characters')}
     } else {
       toast.error("Old price is lower than new price");
     }

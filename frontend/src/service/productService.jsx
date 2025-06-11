@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export async function addProduct(formData, calculateDiscount) {
+export async function addProduct(formData) {
   // Create FormData object
   const newData = new FormData();
   if (
@@ -25,10 +25,6 @@ export async function addProduct(formData, calculateDiscount) {
   // Add other fields
   newData.append("oldPrice", formData.oldPrice);
   newData.append("attributes", JSON.stringify(formData.attributes));
-  newData.append(
-    "discount",
-    calculateDiscount(formData.price, formData.oldPrice)
-  );
   try {
     const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/product`, {
       method: "POST",
@@ -114,7 +110,7 @@ export async function deleteProduct(id) {
   }
 }
 
-export async function updateProduct(productID, formData, calculateDiscount) {
+export async function updateProduct(productID, formData) {
   // Create FormData object
   const newData = new FormData();
 
@@ -140,10 +136,6 @@ export async function updateProduct(productID, formData, calculateDiscount) {
   // Add other fields
   newData.append("oldPrice", formData.oldPrice);
   newData.append("attributes", JSON.stringify(formData.attributes));
-  newData.append(
-    "discount",
-    calculateDiscount(formData.price, formData.oldPrice)
-  );
 
   try {
     const res = await fetch(
