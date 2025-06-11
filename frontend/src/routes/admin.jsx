@@ -26,8 +26,8 @@ export default function Admin() {
         <Route path="updateproduct/:id" element={<AddEditProduct />} />
         <Route path="users" element={<Users />} />
         <Route path="admins" element={<Admins />} />
-        <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

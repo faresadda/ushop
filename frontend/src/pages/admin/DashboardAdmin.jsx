@@ -47,7 +47,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <main className="flex-1 p-6 min-h-screen bg-white">
+    <main className="flex-1 p-4 min-h-screen bg-white">
       {loading ? (
         <div className="flex justify-center items-center h-64">Loading...</div>
       ) : (

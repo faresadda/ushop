@@ -176,7 +176,7 @@ export default function Product() {
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                       Product Specifications
                     </h3>
-                    {products.attributes[0].name && (
+                    {products.attributes && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                         {products.attributes.map((attr, index) => (
                           <div
@@ -189,9 +189,7 @@ export default function Product() {
                             </h4>
                             <select
                               className="text-sm text-gray-600 outline-0"
-                              value={
-                                attributes[index]?.values || attr.values[0]
-                              }
+                              value={attributes[attr.name] || attr.values[0]}
                               onChange={(e) => {
                                 setAttributes({
                                   ...attributes,
@@ -305,7 +303,7 @@ export default function Product() {
                           ? {
                               ...item,
                               quantity: item.quantity + qnt,
-                              selectedAttributes: attributes[0]?.name ? attributes : null,
+                              selectedAttributes: attributes,
                             }
                           : item
                       );
@@ -315,7 +313,7 @@ export default function Product() {
                         {
                           ...products,
                           quantity: qnt,
-                          selectedAttributes: attributes[0]?.name ? attributes : null,
+                          selectedAttributes: attributes,
                         },
                       ];
                     }

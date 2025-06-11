@@ -131,28 +131,11 @@ export default function AdminProducts() {
                 key={index}
                 className="bg-primary p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-gray-100 space-y-2"
               >
-                <div className="relative">
-                  <img
+                <img
                     src={`${import.meta.env.VITE_BASE_URL}${product.image}`}
                     alt={product.name}
                     className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-2 right-2 flex items-center gap-2">
-                    <FaEdit
-                      className="text-2xl text-blue-400"
-                      onClick={() => {
-                        navigate(`/admin/updateproduct/${product._id}`);
-                      }}
-                    />
-                    <FaTrash
-                      className="text-xl text-red-400"
-                      onClick={() => {
-                        setConfirmation(true);
-                        setProductID(product._id);
-                      }}
-                    />
-                  </div>
-                </div>
+                />
 
                 <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 truncate">
                   {product.name}
@@ -177,7 +160,7 @@ export default function AdminProducts() {
                     </span>
                   )}
                 </div>
-                <div>
+                <div className="flex items-center justify-between">
                   {product.stock > 0 ? (
                     <span className="bg-green-100 text-green-600 rounded-lg px-4 py-1 text-sm">
                       in stock ({product.stock})
@@ -187,6 +170,21 @@ export default function AdminProducts() {
                       out of stock
                     </span>
                   )}
+                  <div className="flex items-center gap-2">
+                    <FaEdit
+                      className="text-2xl text-blue-500"
+                      onClick={() => {
+                        navigate(`/admin/updateproduct/${product._id}`);
+                      }}
+                    />
+                    <FaTrash
+                      className="text-xl text-red-500"
+                      onClick={() => {
+                        setConfirmation(true);
+                        setProductID(product._id);
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             ))}

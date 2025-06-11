@@ -170,7 +170,7 @@ export default function Cart() {
                                   {attr.name}
                                 </label>
                                 <select
-                                  value={c.selectedAttributes[index]?.values}
+                                  value={c.selectedAttributes[attr.name]}
                                   onChange={(e) => {
                                     updateProductAttributes(
                                       index,

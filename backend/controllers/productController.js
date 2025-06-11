@@ -48,7 +48,8 @@ const addProduct = asyncHandler(async (req, res) => {
     price: Number(price),
     oldPrice: oldPrice ? Number(oldPrice) : null,
     stock: Number(stock),
-    attributes: attributes ? JSON.parse(attributes) : null,
+    attributes:
+      JSON.parse(attributes).length > 0 ? JSON.parse(attributes) : null,
     image: `/uploads/products/${req.file.filename}`,
     discount: oldPrice ? discount : null,
   });
@@ -112,7 +113,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     price: Number(price),
     oldPrice: oldPrice ? Number(oldPrice) : null,
     stock: Number(stock),
-    attributes: attributes ? JSON.parse(attributes) : null,
+    attributes: attributes.length > 0 ? JSON.parse(attributes) : null,
     discount: discount,
   };
 
