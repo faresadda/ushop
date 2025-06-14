@@ -119,6 +119,36 @@ const getOrders = asyncHandler(async (req,res) => {
   res.status(200).json(appData.createData('orders fetched successfully',orders))
 })
 
+const getPendingOrders = asyncHandler(async (req,res) => {
+  const orders = await Order.find({status:'pending'})
+  res.status(200).json(appData.createData('pending orders fetched successfully',orders))
+})
+
+const getCancelledOrders = asyncHandler(async (req,res) => {
+  const orders = await Order.find({status:'cancelled'})
+  res.status(200).json(appData.createData('cancelled orders fetched successfully',orders))
+})
+
+const getConfirmedOrders = asyncHandler(async (req,res) => {
+  const orders = await Order.find({status:'confirmed'})
+  res.status(200).json(appData.createData('confirmed orders fetched successfully',orders))
+})
+
+const getShippedOrders = asyncHandler(async (req,res) => {
+  const orders = await Order.find({status:'shipped'})
+  res.status(200).json(appData.createData('shipped orders fetched successfully',orders))
+})
+
+const getReturnedOrders = asyncHandler(async (req,res) => {
+  const orders = await Order.find({status:'returned'})
+  res.status(200).json(appData.createData('returned orders fetched successfully',orders))
+})
+
+const getDeliveredOrders = asyncHandler(async (req,res) => {
+  const orders = await Order.find({status:'delivered'})
+  res.status(200).json(appData.createData('delivered orders fetched successfully',orders))
+})
+
 const updateStatus = asyncHandler(async (req,res) => {
   id = req.params.id
   orderStatus = req.body.status
@@ -132,5 +162,11 @@ const updateStatus = asyncHandler(async (req,res) => {
 module.exports = {
   addOrder,
   getOrders,
+  getPendingOrders,
+  getCancelledOrders,
+  getConfirmedOrders,
+  getShippedOrders,
+  getReturnedOrders,
+  getDeliveredOrders,
   updateStatus,
 }

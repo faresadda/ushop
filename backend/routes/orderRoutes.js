@@ -15,7 +15,13 @@ router.route("/order")
   );
 
 router.route("/getorders").get(authorizationUser,authorizationAdmin,ordersService.getOrders)
+router.route("/getpendingorders").get(authorizationUser,authorizationAdmin,ordersService.getPendingOrders)
+router.route("/getcancelledorders").get(authorizationUser,authorizationAdmin,ordersService.getCancelledOrders)
+router.route("/getconfirmedorders").get(authorizationUser,authorizationAdmin,ordersService.getConfirmedOrders)
+router.route("/getshippedorders").get(authorizationUser,authorizationAdmin,ordersService.getShippedOrders)
+router.route("/getreturnedorders").get(authorizationUser,authorizationAdmin,ordersService.getReturnedOrders)
+router.route("/getdeliveredorders").get(authorizationUser,authorizationAdmin,ordersService.getDeliveredOrders)
 
-router.route("/updatestatus").put(authorizationUser,authorizationAdmin,ordersService.updateStatus)
+router.route("/updatestatus/:id").put(authorizationUser,authorizationAdmin,ordersService.updateStatus)
 
 module.exports = router;
