@@ -6,13 +6,14 @@ import Products from "../pages/user/Products";
 import Product from "../pages/user/Product";
 import Cart from "../pages/user/Cart";
 import Profile from "../pages/user/Profile";
+import Checkout from "../pages/user/Checkout";
 import { Routes, Route } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { useState, useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import NotFound from "../components/NotFound";
 import Favorites from "../pages/user/Favorites";
-import Options from "../pages/user/Options"
+import Options from "../pages/user/Options";
 import ProtectedProfile from "../components/ProtectedProfile";
 import Brands from "../pages/user/Brands";
 
@@ -21,7 +22,6 @@ export default function User() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  
 
   return (
     <Routes>
@@ -48,14 +48,18 @@ export default function User() {
           }
         />
         <Route path="cart" element={<Cart />} />
-        <Route path="products" element={<Products style='hidden' />} />
+        <Route path="products" element={<Products style="hidden" />} />
         <Route path="product/:id" element={<Product />} />
         <Route path="favorites" element={<Favorites />} />
-        <Route path="profile" element={
-          <ProtectedProfile>
-            <Profile />
-          </ProtectedProfile>
-        } />
+        <Route
+          path="profile"
+          element={
+            <ProtectedProfile>
+              <Profile />
+            </ProtectedProfile>
+          }
+        />
+        <Route path="checkout" element={<Checkout />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -9,20 +9,22 @@ const cors = require("cors");
 const apikey = require("./middlewares/apikey");
 const productRoutes = require("./routes/productRoutes");
 const path = require("path");
+const orderRoutes = require("./routes/orderRoutes");
 
 app.use(cors());
 
 app.use(express.json());
 
-app.use("/api/ushop", [userRoutes, productRoutes]);
-
-// _dirname = C://.../ushop/backend
-// file:  backend/uploads/products/image.jpg
-// URL: http://your-domain/uploads/products/image.jpg
-
+// URL: http://domain/uploads/products/image.jpg
 app.use("/uploads", express.static("uploads"));
 
 app.use(apikey);
+
+// Mount routes
+app.use("/api/ushop", userRoutes);
+app.use("/api/ushop", productRoutes);
+app.use("/api/ushop", orderRoutes);
+
 app.use(error);
 
 app.use(express.static(path.join(__dirname, "dist")));

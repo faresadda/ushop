@@ -58,7 +58,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <nav className="flex-1 px-4 py-6">
           <SidebarLink icon={<FaChartLine />} label="Dashboard" active setSidebarOpen={setSidebarOpen} path='/admin'/>
           <SidebarLink icon={<FaBoxOpen />} label="Products" setSidebarOpen={setSidebarOpen} path='/admin/products'/>
-          <SidebarLink icon={<FaShoppingCart />} label="Orders" setSidebarOpen={setSidebarOpen}/>
+          <SidebarLink icon={<FaShoppingCart />} label="Orders" setSidebarOpen={setSidebarOpen} path='/admin/orders'/>
           <SidebarLink icon={<FaChartBar />} label="Sales" setSidebarOpen={setSidebarOpen}/>
           <SidebarLink icon={<FaUsers />} label="Users" setSidebarOpen={setSidebarOpen} path='/admin/users'/>
           <SidebarLink icon={<FaUserShield />} label="Admins" setSidebarOpen={setSidebarOpen} path='/admin/admins'/>

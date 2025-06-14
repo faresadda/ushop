@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const userValidator = [
+const passwordValidator = [
     check("password")
         .notEmpty()
         .withMessage("password is required")
@@ -20,4 +20,4 @@ const userValidator = [
           return true;
         }),
     ];
-    module.exports = userValidator;
+    module.exports = passwordValidator;

@@ -8,9 +8,11 @@ import { Filter } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa6";
+import { useOrdersContext } from "../../context/orderContext";
 
 export default function Cart() {
   const { cart, setCart, attributes, setAttributes } = useProductsContext();
+  const {setCartProducts} = useOrdersContext()
   const [sortOption, setSortOption] = useState("newest");
   const navigate = useNavigate();
 
@@ -290,6 +292,7 @@ export default function Cart() {
                 {/* Checkout Button */}
                 <button
                   disabled={cart.length === 0}
+                  onClick={()=>{setCartProducts(true);navigate('/checkout')}}
                   className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-8 shadow-sm hover:shadow"
                 >
                   {cart.length === 0 ? "Cart is Empty" : "PROCEED TO CHECKOUT"}

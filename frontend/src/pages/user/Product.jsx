@@ -9,7 +9,8 @@ import { useProductsContext } from "../../context/productsContext";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { getProduct } from "../../service/productService";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
+import { useOrdersContext } from "../../context/orderContext";
 
 // Sample user reviews data - In a real app, this would come from your backend
 const sampleReviews = [
@@ -34,8 +35,10 @@ const sampleReviews = [
 ];
 
 export default function Product() {
+  const navigate = useNavigate()
   const { cart, setCart, attributes, setAttributes } = useProductsContext();
-  const [products, setProducts] = useState(null);
+  const {setOrder,setCartProducts} = useOrdersContext()
+  const [product, setProduct] = useState(null);
   const [qnt, setQnt] = useState(1);
 
   const [newComment, setNewComment] = useState("");
@@ -80,7 +83,7 @@ export default function Product() {
       setLoading(true);
       const res = await getProduct(id);
       if (res && res.data) {
-        setProducts(res.data);
+        setProduct(res.data);
         // Initialize attributes with default values
         if (res.data.attributes) {
           setAttributes(
@@ -104,7 +107,7 @@ export default function Product() {
     );
   }
 
-  if (!products) {
+  if (!product) {
     return (
       <div className="h-screen flex justify-center items-center">
         Product not found
@@ -122,13 +125,13 @@ export default function Product() {
               {/* Product Image Gallery */}
               <div className="relative aspect-square bg-primary">
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}${products.image}`}
-                  alt={products.name}
+                  src={`${import.meta.env.VITE_BASE_URL}${product.image}`}
+                  alt={product.name}
                   className="w-full h-full object-contain p-4 sm:p-8"
                 />
-                {products.discount > 0 && (
+                {product.discount > 0 && (
                   <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-red-500 text-white px-2 py-2 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1">
-                    -{products.discount}%
+                    -{product.discount}%
                     <MdOutlineDiscount className="text-base sm:text-lg" />
                   </div>
                 )}
@@ -138,10 +141,10 @@ export default function Product() {
                 <div className="space-y-4 sm:space-y-6">
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                      {products.name}
+                      {product.name}
                     </h1>
                     <p className="text-gray-600 text-sm sm:text-base">
-                      {products.description}
+                      {product.description}
                     </p>
                   </div>
 
@@ -156,16 +159,16 @@ export default function Product() {
 
                   <div className="flex items-center gap-3 sm:gap-4">
                     <span className="text-2xl sm:text-3xl font-bold text-gray-900">
-                      ${products.price}
+                      ${product.price}
                     </span>
-                    {products.oldPrice && (
+                    {product.oldPrice && (
                       <del className="text-base sm:text-lg text-gray-500">
-                        ${products.oldPrice}
+                        ${product.oldPrice}
                       </del>
                     )}
-                    {products.discount > 0 && (
+                    {product.discount > 0 && (
                       <span className="bg-amber-100 text-amber-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1">
-                        -{products.discount}%
+                        -{product.discount}%
                         <MdOutlineDiscount className="text-base sm:text-lg" />
                       </span>
                     )}
@@ -176,9 +179,9 @@ export default function Product() {
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                       Product Specifications
                     </h3>
-                    {products.attributes && (
+                    {product.attributes && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                        {products.attributes.map((attr, index) => (
+                        {product.attributes.map((attr, index) => (
                           <div
                             key={index}
                             className="bg-white flex items-center justify-between gap-3 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors"
@@ -254,7 +257,7 @@ export default function Product() {
                 <div className="flex justify-between text-gray-600">
                   <p className="text-sm sm:text-base">Subtotal</p>
                   <p className="font-medium">
-                    {(products.price * qnt).toFixed(2)} $
+                    {(product.price * qnt).toFixed(2)} $
                   </p>
                 </div>
                 <div className="flex justify-between text-gray-600">
@@ -264,7 +267,7 @@ export default function Product() {
                 <div className="border-t pt-3 sm:pt-4 flex justify-between text-base sm:text-lg font-bold">
                   <p>Total</p>
                   <p className="text-xl sm:text-2xl text-green-600">
-                    {(products.price * qnt ).toFixed(2)} $
+                    {(product.price * qnt ).toFixed(2)} $
                   </p>
                 </div>
               </div>
@@ -286,7 +289,16 @@ export default function Product() {
                 </div>
               </div>
 
-              <button className="w-full bg-black text-white py-3 sm:py-3.5 rounded-lg hover:bg-gray-800 transition-colors mt-4 sm:mt-6 font-medium shadow-sm hover:shadow text-sm sm:text-base">
+              <button className="w-full bg-black text-white py-3 sm:py-3.5 rounded-lg hover:bg-gray-800 transition-colors mt-4 sm:mt-6 
+                      font-medium shadow-sm hover:shadow text-sm sm:text-base"
+                      onClick={()=>{
+                        const saveOrder = {...product , quantity : qnt , selectedAttributes : attributes}
+                        setOrder(saveOrder);
+                        localStorage.setItem('order',JSON.stringify(saveOrder))
+                        navigate('/checkout')
+                        setCartProducts(false)
+                        localStorage.setItem('cartProducts',false)
+                        }}>
                 Pay Now
               </button>
               <button
@@ -294,12 +306,12 @@ export default function Product() {
                 onClick={() => {
                   setCart(() => {
                     const existingProduct = cart.find(
-                      (item) => item.id === products.id
+                      (item) => item._id === product._id
                     );
                     let cartArray;
                     if (existingProduct) {
                       cartArray = cart.map((item) =>
-                        item.id === products.id
+                        item._id === product._id
                           ? {
                               ...item,
                               quantity: item.quantity + qnt,
@@ -311,7 +323,7 @@ export default function Product() {
                       cartArray = [
                         ...cart,
                         {
-                          ...products,
+                          ...product,
                           quantity: qnt,
                           selectedAttributes: attributes,
                         },

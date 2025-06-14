@@ -1,25 +1,4 @@
 import { createContext, useContext, useState } from "react";
-import phone2 from "../../public/phone2.png";
-import phones3 from "../../public/phones3.png";
-import phones4 from "../../public/phones4.png";
-import pc2 from "../../public/pc2.png";
-import pc3 from "../../public/pc3.png";
-import pc4 from "../../public/pc4.png";
-import forn2 from "../../public/forn2.png";
-import forn3 from "../../public/forn3.png";
-import forn4 from "../../public/forn4.png";
-import clothes2 from "../../public/clothes2.png";
-import clothes3 from "../../public/clothes3.png";
-import clothes4 from "../../public/clothes4.png";
-import shoes2 from "../../public/shoes2.png";
-import shoes3 from "../../public/shoes3.png";
-import shoes4 from "../../public/shoes4.png";
-import elec2 from "../../public/elec2.png";
-import elec3 from "../../public/elec3.png";
-import elec4 from "../../public/elec4.png";
-import acc2 from "../../public/acc2.png";
-import acc3 from "../../public/acc3.png";
-import acc4 from "../../public/acc4.png";
 import { useEffect, useReducer } from "react";
 import phone1 from "../../public/phone1.png";
 import pc1 from "../../public/pc1.png";
@@ -169,6 +148,8 @@ export function ProductsProvider({ children }) {
 
         attributes,
         setAttributes,
+
+
         
       }}
     >

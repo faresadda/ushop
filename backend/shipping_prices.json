@@ -1,0 +1,352 @@
+{
+  "states": [
+    {
+      "id": 1,
+      "name": "Adrar",
+      "home_shipping": 1200,
+      "office_shipping": 800
+    },
+    {
+      "id": 2,
+      "name": "Chlef",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 3,
+      "name": "Laghouat",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 4,
+      "name": "Oum El Bouaghi",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 5,
+      "name": "Batna",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 6,
+      "name": "Béjaïa",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 7,
+      "name": "Biskra",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 8,
+      "name": "Béchar",
+      "home_shipping": 1200,
+      "office_shipping": 800
+    },
+    {
+      "id": 9,
+      "name": "Blida",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 10,
+      "name": "Bouira",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 11,
+      "name": "Tamanrasset",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 12,
+      "name": "Tébessa",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 13,
+      "name": "Tlemcen",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 14,
+      "name": "Tiaret",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 15,
+      "name": "Tizi Ouzou",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 16,
+      "name": "Alger",
+      "home_shipping": 600,
+      "office_shipping": 300
+    },
+    {
+      "id": 17,
+      "name": "Djelfa",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 18,
+      "name": "Jijel",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 19,
+      "name": "Sétif",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 20,
+      "name": "Saïda",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 21,
+      "name": "Skikda",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 22,
+      "name": "Sidi Bel Abbès",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 23,
+      "name": "Annaba",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 24,
+      "name": "Guelma",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 25,
+      "name": "Constantine",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 26,
+      "name": "Médéa",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 27,
+      "name": "Mostaganem",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 28,
+      "name": "M'Sila",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 29,
+      "name": "Mascara",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 30,
+      "name": "Ouargla",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 31,
+      "name": "Oran",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 32,
+      "name": "El Bayadh",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 33,
+      "name": "Illizi",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 34,
+      "name": "Bordj Bou Arréridj",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 35,
+      "name": "Boumerdès",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 36,
+      "name": "El Tarf",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 37,
+      "name": "Tindouf",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 38,
+      "name": "Tissemsilt",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 39,
+      "name": "El Oued",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 40,
+      "name": "Khenchela",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 41,
+      "name": "Souk Ahras",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 42,
+      "name": "Tipaza",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 43,
+      "name": "Mila",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 44,
+      "name": "Aïn Defla",
+      "home_shipping": 700,
+      "office_shipping": 400
+    },
+    {
+      "id": 45,
+      "name": "Naâma",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 46,
+      "name": "Aïn Témouchent",
+      "home_shipping": 900,
+      "office_shipping": 600
+    },
+    {
+      "id": 47,
+      "name": "Ghardaïa",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 48,
+      "name": "Relizane",
+      "home_shipping": 800,
+      "office_shipping": 500
+    },
+    {
+      "id": 49,
+      "name": "Timimoun",
+      "home_shipping": 1200,
+      "office_shipping": 800
+    },
+    {
+      "id": 50,
+      "name": "Bordj Badji Mokhtar",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 51,
+      "name": "Ouled Djellal",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 52,
+      "name": "Béni Abbès",
+      "home_shipping": 1200,
+      "office_shipping": 800
+    },
+    {
+      "id": 53,
+      "name": "In Salah",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 54,
+      "name": "In Guezzam",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 55,
+      "name": "Touggourt",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 56,
+      "name": "Djanet",
+      "home_shipping": 1500,
+      "office_shipping": 1000
+    },
+    {
+      "id": 57,
+      "name": "El M'Ghair",
+      "home_shipping": 1000,
+      "office_shipping": 700
+    },
+    {
+      "id": 58,
+      "name": "El Meniaa",
+      "home_shipping": 1200,
+      "office_shipping": 800
+    }
+  ]
+} 

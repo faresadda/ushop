@@ -5,6 +5,7 @@ import Admin from "./routes/admin";
 import NotFound from "./components/NotFound";
 import ProtectedAdmin from "./components/ProtectedAdmin";
 import { ToastContainer } from "react-toastify";
+import Orders from "./pages/admin/Orders";
 
 export default function App() {
   return (

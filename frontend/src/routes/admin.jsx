@@ -7,6 +7,7 @@ import AdminProducts from "../pages/admin/AdminProducts";
 import AddEditProduct from "../pages/admin/AddEditProduct";
 import Users from "../pages/admin/Users";
 import Admins from "../pages/admin/Admins";
+import Orders from "../pages/admin/Orders";
 
 export default function Admin() {
   return (
@@ -26,6 +27,7 @@ export default function Admin() {
         <Route path="updateproduct/:id" element={<AddEditProduct />} />
         <Route path="users" element={<Users />} />
         <Route path="admins" element={<Admins />} />
+        <Route path="orders" element={<Orders />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
