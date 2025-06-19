@@ -8,7 +8,6 @@ const addProduct = asyncHandler(async (req, res) => {
   if (!req.file) {
     throw appError.createError(400, "Please upload a product image");
   }
-  console.log(req.file);
   const { name, description, category, price, oldPrice, stock, attributes } =
     req.body;
 

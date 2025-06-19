@@ -27,7 +27,7 @@ export default function ResetPassword() {
       setIsLoading(false);
       if (res.status === "success") {
         localStorage.removeItem("verificationCode");
-        navigate("/account/login");
+        navigate("/login");
         setMessage('')
         toast.success('Password changed successfully')
       }
@@ -89,7 +89,7 @@ export default function ResetPassword() {
         >
           Reset Password {isLoading && <LoadingSpinner />}
         </button>
-        <Link to="/account/login" className="text-red-500 text-[14px] font-medium">
+        <Link to="/login" className="text-red-500 text-[14px] font-medium">
           Back to Login
         </Link>
       </div>

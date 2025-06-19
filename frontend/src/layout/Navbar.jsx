@@ -202,13 +202,20 @@ export default function Navbar() {
           {!token ? (
             <button
               className="flex items-center gap-1 hover:text-red-500 transition"
-              onClick={() => navigate("/account/login")}
+              onClick={() => navigate("/login")}
             >
               <UserCircle className="text-2xl" />
             </button>
           ) : user && user.data ? (
-            <span
-              className="text-xs rounded-full bg-blue-700 text-white p-2 cursor-pointer"
+            user.data.image
+            ? <img
+              src={`${import.meta.env.VITE_BASE_URL}${user.data.image}`}
+              alt="Profile"
+              className="w-8 h-8 rounded-full object-cover"
+              onClick={()=>navigate('/profile')}
+            />
+            :<span
+              className="w-8 h-8 text-xs rounded-full bg-blue-700 text-white p-2 cursor-pointer"
               onClick={() => navigate("/profile")}
             >
               {user.data.firstName.slice(0,1)}{user.data.lastName.slice(0,1)}

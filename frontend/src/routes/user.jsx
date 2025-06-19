@@ -16,6 +16,11 @@ import Favorites from "../pages/user/Favorites";
 import Options from "../pages/user/Options";
 import ProtectedProfile from "../components/ProtectedProfile";
 import Brands from "../pages/user/Brands";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
+import VerifyEmail from "../pages/auth/VerifyEmail";
 
 export default function User() {
   const { pathname } = useLocation();
@@ -25,9 +30,7 @@ export default function User() {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
+      <Route path="/" element={
           <>
             <Navbar />
             <Outlet />
@@ -61,7 +64,14 @@ export default function User() {
         />
         <Route path="checkout" element={<Checkout />} />
       </Route>
+
+      <Route path="login" element={<Login/>} />
+      <Route path="register" element={<Register/>} />
+      <Route path="forgotpassword" element={<ForgotPassword/>} />
+      <Route path="resetpassword" element={<ResetPassword />} />
+      <Route path="verifyemail" element={<VerifyEmail/>} />
       <Route path="*" element={<NotFound />} />
+      
     </Routes>
   );
 }

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    userId : Object ,
+    userId : mongoose.Schema.Types.ObjectId ,
 
     firstName: {
       type: String,
@@ -29,7 +29,7 @@ const orderSchema = new mongoose.Schema(
         _id : false , 
         
         productId: {
-          type: Object,
+          type: mongoose.Schema.Types.ObjectId,
           required: true,
         },
         image: {
@@ -79,7 +79,6 @@ const orderSchema = new mongoose.Schema(
 
     notes: String,
 
-    orders : Number,
   },
   { timestamps: true }
 );

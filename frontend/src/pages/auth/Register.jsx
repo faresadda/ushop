@@ -42,7 +42,7 @@ export default function Registre() {
       if (res.status === "success") {
         localStorage.setItem("id", res.data._id);
         setId(localStorage.getItem("id"));
-        navigate("/account/verifyemail");
+        navigate("/verifyemail");
         setMessage("");
         localStorage.setItem("type", "activate");
       } else {
@@ -248,7 +248,7 @@ export default function Registre() {
         </button>
         <hr />
         <Link
-          to="/account/login"
+          to="/login"
           className="text-red-500 text-[14px] cursor-grab font-medium"
         >
           Already have an account?

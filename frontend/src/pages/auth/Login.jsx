@@ -39,7 +39,7 @@ export default function Login() {
           navigate("/admin");
         }
       } else {
-        navigate("/account/verifyemail");
+        navigate("/verifyemail");
         localStorage.setItem("type", "activate");
       }
     } else {
@@ -94,12 +94,12 @@ export default function Login() {
         >
           Login {isLoading && <LoadingSpinner />}
         </button>
-        <Link to="/account/forgotpassword" className="text-red-500 text-[14px] font-medium">
+        <Link to="/forgotpassword" className="text-red-500 text-[14px] font-medium">
           Forgot your password?
         </Link>
         <hr />
         <Link
-          to="/account/register"
+          to="/register"
           className="border border-gray-200 py-2 w-[80%] max-[500px]:w-[90%] cursor-grab text-center rounded-[5px] font-medium"
         >
           Create a new account

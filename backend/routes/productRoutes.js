@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
-const upload = require("../middlewares/upload");
+const {product} = require("../middlewares/upload");
 const {
   authorizationAdmin,
   authorizationUser,
@@ -12,7 +12,7 @@ router
   .post(
     authorizationUser,
     authorizationAdmin,
-    upload.single("image"),
+    product.single("image"),
     productController.addProduct
   )
   .get(productController.getProducts);
@@ -28,7 +28,7 @@ router
   .put(
     authorizationUser,
     authorizationAdmin,
-    upload.single("image"),
+    product.single("image"),
     productController.updateProduct
   );
 

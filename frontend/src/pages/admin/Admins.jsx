@@ -11,6 +11,7 @@ import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Confirmation from "../../components/Confirmation";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { Meta } from "react-router-dom";
 
 export default function Admins() {
   const [admins, setAdmins] = useState([]);
@@ -109,7 +110,7 @@ export default function Admins() {
               >
                 {admin.image ? (
                   <img
-                    src={admin.image || "/default-avatar.png"}
+                    src={`${import.meta.env.VITE_BASE_URL}${admin.image}`}
                     alt={admin.firstName}
                     className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 shadow-sm"
                   />

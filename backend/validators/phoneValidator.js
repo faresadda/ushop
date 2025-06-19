@@ -6,10 +6,10 @@ const phoneValidator = [
     .withMessage("phone must be required")
     .isNumeric()
     .withMessage("phone must be a number")
-    .matches(/^[0-9]{10}$/)
-    .withMessage("phone must consist of 10 numbers")
-    .matches(/^0[567]/)
-    .withMessage("phone must start with 05, 06, or 07"),
+    .matches(/^0[567][0-9]{8}$/)
+    .withMessage(
+      "phone must start with 05, 06, or 07 and consist of 10 numbers"
+    ),
 ];
 
 module.exports = phoneValidator;

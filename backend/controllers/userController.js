@@ -187,9 +187,8 @@ const updateUser = asyncHandler(async (req, res) => {
       .status(400)
       .json(appError.createError(400, errors.array(), user));
   }
-  const updateUser = await User.findByIdAndUpdate(
-    id,
-    { $set: { ...req.body } },
+  const updateUser = await User.findByIdAndUpdate(id,
+    { $set: !req.file ? {...req.body} : { ...req.body,image: `/uploads/users/${req.file.filename}` } },
     { new: true }
   ).select("-password");
   if (!user) {

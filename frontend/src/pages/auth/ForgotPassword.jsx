@@ -22,7 +22,7 @@ export default function ForgotPassword() {
     if (res.status == "success") {
       localStorage.setItem("id", res.data._id);
       setId(localStorage.getItem("id"));
-      navigate("/account/verifyemail");
+      navigate("/verifyemail");
       setMessage("");
       localStorage.setItem("type", "reset");
     } else {
@@ -64,7 +64,7 @@ export default function ForgotPassword() {
         >
           Send code {isLoading && <LoadingSpinner />}
         </button>
-        <Link to="/account/login" className="text-red-500 text-[14px] font-medium">
+        <Link to="/login" className="text-red-500 text-[14px] font-medium">
           Back to Login
         </Link>
       </div>

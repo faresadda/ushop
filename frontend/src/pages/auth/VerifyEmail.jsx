@@ -36,7 +36,7 @@ export default function VerifyEmail() {
         }
       } else if (localStorage.getItem("type") === "reset") {
         localStorage.setItem("verificationCode", verificationCode);
-        navigate("/account/resetpassword");
+        navigate("/resetpassword");
         setSendMessage("");
       }
     } else {
@@ -100,7 +100,7 @@ export default function VerifyEmail() {
           </p>
         </div>
         {resendMessage && <p className="text-green-500 text-xs font-medium -mt-2">{resendMessage}</p>}
-        <Link to="/account/login" className="text-red-500 text-[14px] font-medium">
+        <Link to="/login" className="text-red-500 text-[14px] font-medium">
           Back to Login
         </Link>
       </div>

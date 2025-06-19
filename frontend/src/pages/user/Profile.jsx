@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useProductsContext } from "../../context/productsContext";
-import { FaUser, FaShoppingBag, FaCog, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaPlus,
+  FaUser,
+  FaShoppingBag,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { MdOutlineSecurity, MdOutlinePayment } from "react-icons/md";
 import { BsBoxSeam } from "react-icons/bs";
 import { toast } from "react-toastify";
@@ -14,16 +20,27 @@ import {
   updatePassword,
   updateUser,
   addPhone,
-  addAddress
+  addAddress,
 } from "../../service/userService";
+import { getUserOrders } from "../../service/orderService";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Confirmation from "../../components/Confirmation";
+import data from "../../data/shipping_prices.json";
 
 export default function Profile() {
-  const { cart } = useProductsContext();
-  const {user,setUser,confirmation,setConfirmation,logOut,id,setId,setToken,isLoading,setIsLoading,
-    } = useUserContext();
+  const {
+    user,
+    setUser,
+    confirmation,
+    setConfirmation,
+    logOut,
+    id,
+    setId,
+    setToken,
+    getUserFunction,
+  } = useUserContext();
+  const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [isEditing, setIsEditing] = useState(false);
   const [isAddPhone, setIsAddPhone] = useState(false);
@@ -35,13 +52,41 @@ export default function Profile() {
   const [editMessage, setEditMessage] = useState("");
   const [deleteMessage, setDeleteMessage] = useState("");
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  const [formData, setFormData] = useState({
+    image: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    gender: "",
+    birthday: "",
+    phone: "",
+    address: "",
+  });
+  const [profileImage, setProfileImage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (files) {
+      // Handle file upload
+      setFormData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
+      setProfileImage(URL.createObjectURL(files[0]));
+    } else {
+      // Handle text inputs
+      setFormData((prev) => ({
+        ...prev,
+        address: `${state} , ${city} , ${street}`,
+        [name]: value,
+      }));
+    }
+  };
+
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [street, setStreet] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -55,52 +100,58 @@ export default function Profile() {
   ];
 
   const deleteUserFunction = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const res = await deleteUser(id, currentPassword);
-    setIsLoading(false)
+    setIsLoading(false);
     setUser(res);
     if (res && res.status === "success") {
       setDeleteAccount(false);
       navigate("/");
-      setDeleteMessage('')
-      setToken('')
-      localStorage.removeItem('token')
-      setId('')
-      localStorage.removeItem('id')
-      toast.success('Account removed successfully')
+      setDeleteMessage("");
+      setToken("");
+      localStorage.removeItem("token");
+      setId("");
+      localStorage.removeItem("id");
+      toast.success("Account removed successfully");
+    } else {
+      setDeleteMessage(res.message);
     }
-    else{setDeleteMessage(res.message)}
   };
 
   const updateUserFunction = async () => {
-    const res = await updateUser(id, {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      gender: gender,
-      birthday: birthday,
-      phone:phone,
-      address:address
-    });
-    setUser(res);
+    const res = await updateUser(id, formData, user, profileImage);
     setIsLoading(false);
     if (res && res.status === "success") {
+      setUser(res);
       setIsEditing(false);
       toast.success("Profile updated successfully");
-      setEditMessage('')
+      setEditMessage("");
     } else {
       setEditMessage(res.message);
     }
   };
 
   useEffect(() => {
-      setFirstName(user.data.firstName);
-      setLastName(user.data.lastName);
-      setEmail(user.data.email);
-      setGender(user.data.gender);
-      setBirthday(user.data.birthday.split("T")[0]);
-      setPhone(user.data.phone)
-      setAddress(user.data.address)
+    const fetchUser = async () => {
+      const res = await getUserFunction();
+      setFormData({
+        image: res.data.image,
+        firstName: res.data.firstName,
+        lastName: res.data.lastName,
+        email: res.data.email,
+        gender: res.data.gender,
+        birthday: res.data.birthday.split("T")[0],
+        phone: res.data.phone || "",
+        address: res.data.address || "",
+      });
+
+      const [state, city, street] = res.data.address.split(" , ");
+      setState(state);
+      setCity(city);
+      setStreet(street);
+    };
+
+    fetchUser();
   }, []);
 
   const updatePasswordFunction = async (e) => {
@@ -112,10 +163,10 @@ export default function Profile() {
       setIsLoading(false);
       if (res && res.status === "success") {
         toast.success("Password update successfully");
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
-        setPasswordMessage('')
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setPasswordMessage("");
       } else {
         setPasswordMessage(res.message);
       }
@@ -125,22 +176,34 @@ export default function Profile() {
   };
 
   const addPhoneFunction = async () => {
-    setIsLoading(true)
-    const res = await addPhone(id,phone)
-    setIsLoading(false)
-    setUser(res)
-    toast.success('Phone added successfully')
-    setIsAddPhone('')
-  }
+    setIsLoading(true);
+    const res = await addPhone(id, formData.phone);
+    setIsLoading(false);
+    setUser(res);
+    toast.success("Phone added successfully");
+    setIsAddPhone("");
+  };
 
   const addAddressFunction = async () => {
-    setIsLoading(true)
-    const res = await addAddress(id,address)
-    setIsLoading(false)
-    setUser(res)
-    toast.success('Address added successfully')
-    setIsAddPhone('')
-  }
+    const a = `${state} , ${city} , ${street}`;
+    setIsLoading(true);
+    const res = await addAddress(id, a);
+    setIsLoading(false);
+    setUser(res);
+    toast.success("Address added successfully");
+    setIsAddPhone("");
+  };
+
+  const [userOrders, setUserOrders] = useState("");
+  const getUserOrdersFunction = async () => {
+    setIsLoading(true);
+    const res = await getUserOrders(id);
+    setIsLoading(false);
+    if (res.status === "success") {
+      setUserOrders(res.data);
+      toast.success("User orders fetched successfully");
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -148,19 +211,47 @@ export default function Profile() {
         return (
           <div className="bg-primary rounded-xl shadow-sm p-6">
             <div className="flex items-center gap-6 mb-8">
-              <div
-                className="relative w-20 h-20 rounded-full bg-blue-700 text-white
-                 place-content-center text-center text-2xl"
-              >
-                {user.data.firstName.slice(0, 1)}
-                {user.data.lastName.slice(0, 1)}
+              <div className="relative w-20 h-20 rounded-full flex items-center justify-center">
+                {user?.data?.image ? (
+                  profileImage ? (
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={`${import.meta.env.VITE_BASE_URL}${user.data.image}`}
+                      alt="Profile"
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  )
+                ) : profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="w-full h-full rounded-full bg-blue-700 text-white flex items-center justify-center text-2xl font-semibold">
+                    {user?.data?.firstName?.slice(0, 1)}
+                    {user?.data?.lastName?.slice(0, 1)}
+                  </span>
+                )}
+
                 {isEditing && (
-                  <button
-                    className="absolute bottom-0 right-0 bg-blue-800 text-white p-2
-                   rounded-full hover:bg-gray-800 transition-colors"
-                  >
-                    <FaUser className="w-4 h-4" />
-                  </button>
+                  <div className="absolute bottom-0 right-0">
+                    <input
+                      className="absolute inset-0 opacity-0 cursor-pointer w-8 h-8"
+                      type="file"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleChange}
+                    />
+                    <div className="bg-blue-400 rounded-full p-2">
+                      <FaPlus className="text-xs text-white" />
+                    </div>
+                  </div>
                 )}
               </div>
               <div>
@@ -187,10 +278,9 @@ export default function Profile() {
                   <div>
                     <input
                       type="text"
-                      value={firstName}
-                      onChange={(e) => {
-                        setFirstName(e.target.value);
-                      }}
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
                       className={`${
                         editMessage &&
                         typeof message === "object" &&
@@ -203,8 +293,11 @@ export default function Profile() {
                     {editMessage &&
                       typeof editMessage === "object" &&
                       editMessage.find((err) => err.path === "firstName") && (
-                        <p className="text-red-500 text-sm mt-1 font-medium px-4">
-                          {editMessage.find((err) => err.path === "firstName").msg}
+                        <p className="text-red-500 text-xs mt-1 font-medium px-4">
+                          {
+                            editMessage.find((err) => err.path === "firstName")
+                              .msg
+                          }
                         </p>
                       )}
                   </div>
@@ -221,10 +314,9 @@ export default function Profile() {
                   <div>
                     <input
                       type="text"
-                      value={lastName}
-                      onChange={(e) => {
-                        setLastName(e.target.value);
-                      }}
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
                       className={`${
                         editMessage &&
                         typeof editMessage === "object" &&
@@ -237,8 +329,11 @@ export default function Profile() {
                     {editMessage &&
                       typeof editMessage === "object" &&
                       editMessage.find((err) => err.path === "lastName") && (
-                        <p className="text-red-500 text-sm mt-1 font-medium px-4">
-                          {editMessage.find((err) => err.path === "lastName").msg}
+                        <p className="text-red-500 text-xs mt-1 font-medium px-4">
+                          {
+                            editMessage.find((err) => err.path === "lastName")
+                              .msg
+                          }
                         </p>
                       )}
                   </div>
@@ -255,13 +350,13 @@ export default function Profile() {
                   <div>
                     <input
                       type="email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       className={`${
                         editMessage &&
-                        (typeof editMessage === "string" ||
+                        ((typeof editMessage === "string" &&
+                          editMessage.startsWith("email")) ||
                           (typeof editMessage === "object" &&
                             editMessage.find((err) => err.path === "email")))
                           ? "border-red-200"
@@ -269,14 +364,17 @@ export default function Profile() {
                       }
                         w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg`}
                     />
-                    {editMessage && typeof editMessage === "string" && (
-                      <p className="text-xs font-medium text-red-500 mt-1 px-4">
-                        {editMessage}
-                      </p>
-                    )}
-                    {editMessage && typeof editMessage === "object" &&
+                    {editMessage &&
+                      typeof editMessage === "string" &&
+                      editMessage.startsWith("email") && (
+                        <p className="text-xs font-medium text-red-500 mt-1 px-4">
+                          {editMessage}
+                        </p>
+                      )}
+                    {editMessage &&
+                      typeof editMessage === "object" &&
                       editMessage.find((err) => err.path === "email") && (
-                        <p className="text-red-500 text-sm mt-1 font-medium px-4">
+                        <p className="text-red-500 text-xs mt-1 font-medium px-4">
                           {editMessage.find((err) => err.path === "email").msg}
                         </p>
                       )}
@@ -299,11 +397,11 @@ export default function Profile() {
                         name="gender"
                         value="male"
                         checked={
-                          !gender
+                          !formData.gender
                             ? user.data.gender === "male"
-                            : gender === "male"
+                            : formData.gender === "male"
                         }
-                        onChange={() => setGender("male")}
+                        onChange={handleChange}
                         required
                       />
                     </label>
@@ -314,11 +412,11 @@ export default function Profile() {
                         name="gender"
                         value="female"
                         checked={
-                          !gender
+                          !formData.gender
                             ? user.data.gender === "female"
-                            : gender === "female"
+                            : formData.gender === "female"
                         }
-                        onChange={() => setGender("female")}
+                        onChange={handleChange}
                         required
                       />
                     </label>
@@ -335,10 +433,9 @@ export default function Profile() {
                 {isEditing ? (
                   <input
                     type="date"
-                    value={birthday}
-                    onChange={(e) => {
-                      setBirthday(e.target.value);
-                    }}
+                    name="birthday"
+                    value={formData.birthday}
+                    onChange={handleChange}
                     className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg"
                   />
                 ) : (
@@ -354,17 +451,31 @@ export default function Profile() {
 
               {user.data.phone && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block font-medium text-gray-700 mb-2">
                     Phone
                   </label>
                   {isEditing ? (
-                    <input
-                      type="number"
-                      value={phone}
-                      onChange={(e)=>{setPhone(e.target.value)}}
-                      className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg"
-                      rows="3"
-                    />
+                    <div>
+                      <input
+                        type="number"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className={`w-full px-4 outline-0 py-2 border rounded-lg mt-2 
+                        ${
+                          typeof editMessage === "string" &&
+                          editMessage.startsWith("Phone")
+                            ? "border-red-200"
+                            : "border-gray-200"
+                        }`}
+                      />
+                      {typeof editMessage === "string" &&
+                        editMessage.startsWith("Phone") && (
+                          <p className="text-red-500 text-xs mt-1 font-medium px-4">
+                            {editMessage}
+                          </p>
+                        )}
+                    </div>
                   ) : (
                     <p className="text-gray-900">{user.data.phone}</p>
                   )}
@@ -373,17 +484,87 @@ export default function Profile() {
 
               {user.data.address && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-4">
                     Address
                   </label>
                   {isEditing ? (
-                    <input
-                      type="text"
-                      value={address}
-                      onChange={(e)=>{setAddress(e.target.value)}}
-                      className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg"
-                      rows="3"
-                    />
+                    <div className="space-y-4 ">
+                      <div>
+                        <label
+                          htmlFor="wilaya"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                          State
+                        </label>
+                        <select
+                          id="state"
+                          name="state"
+                          required
+                          value={state}
+                          onChange={(e) => setState(e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
+                        >
+                          <option value="" className="text-gray-700">
+                            Select State
+                          </option>
+                          {data.states.map((d, i) => (
+                            <option
+                              key={i}
+                              value={d.name}
+                              className="text-gray-700"
+                            >
+                              {d.id} - {d.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                          City
+                        </label>
+                        <select
+                          type="text"
+                          id="city"
+                          name="city"
+                          required
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
+                          placeholder="Enter city"
+                        >
+                          <option>Select City</option>
+                          {state &&
+                            data.states
+                              .find((s) => s.name === state)
+                              ?.city.map((c, i) => (
+                                <option key={i}>{c}</option>
+                              ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="street"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                          Street Address
+                        </label>
+                        <input
+                          type="text"
+                          id="street"
+                          name="street"
+                          required
+                          value={street}
+                          onChange={(e) => setStreet(e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                          placeholder="Enter street address"
+                        />
+                      </div>
+                    </div>
                   ) : (
                     <p className="text-gray-900">{user.data.address}</p>
                   )}
@@ -398,11 +579,15 @@ export default function Profile() {
                     onClick={() => {
                       setIsEditing(false);
                       setEditMessage("");
-                      setFirstName(user.data.firstName);
-                      setLastName(user.data.lastName);
-                      setEmail(user.data.email);
-                      setGender(user.data.gender);
-                      setBirthday(user.data.birthday.split("T")[0]);
+                      setFormData({
+                        firstName: user.data.firstName,
+                        lastName: user.data.lastName,
+                        email: user.data.email,
+                        gender: user.data.gender,
+                        birthday: user.data.birthday.split("T")[0],
+                        phone: user.data.phone ? user.data.phone : "",
+                        address: user.data.address ? user.data.address : "",
+                      });
                     }}
                     className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
@@ -447,16 +632,15 @@ export default function Profile() {
                         ) : (
                           <input
                             type="number"
-                            value={phone}
+                            name="phone"
+                            value={formData.phone}
                             placeholder="Phone"
-                            onChange={(e) => {
-                              setPhone(e.target.value);
-                            }}
+                            onChange={handleChange}
                             className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg mt-2"
                           />
                         )}
                       </div>
-                      <div >
+                      <div>
                         {!isAddPhone ? (
                           <button
                             className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -467,14 +651,18 @@ export default function Profile() {
                           </button>
                         ) : (
                           <div className="flex space-x-4 w-full">
-                          <button onClick={() => addPhoneFunction()} 
-                          className="px-4 py-2 rounded-lg text-white bg-black flex-1 flex items-center justify-center gap-2">
-                            Save {isLoading && <LoadingSpinner />}
-                          </button>
-                          <button onClick={() => setIsAddPhone(false)} 
-                          className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 flex-1">
-                            Cancel
-                          </button>
+                            <button
+                              onClick={() => addPhoneFunction()}
+                              className="px-4 py-2 rounded-lg text-white bg-black flex-1 flex items-center justify-center gap-2"
+                            >
+                              Save {isLoading && <LoadingSpinner />}
+                            </button>
+                            <button
+                              onClick={() => setIsAddPhone(false)}
+                              className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 flex-1"
+                            >
+                              Cancel
+                            </button>
                           </div>
                         )}
                       </div>
@@ -482,10 +670,10 @@ export default function Profile() {
                   </div>
                 )}
                 {!user.data.address && (
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="flex justify-between flex-col md:flex-row md:items-center gap-5">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                  <div className="bg-gray-50 rounded-xl">
+                    <div className="flex justify-between flex-col md:flex-row md:items-end gap-10">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-5">
                           Delivery Address
                         </h3>
                         {!isAddAddress ? (
@@ -493,18 +681,86 @@ export default function Profile() {
                             Add your address for faster delivery
                           </p>
                         ) : (
-                          <input
-                            type="text"
-                            value={address}
-                            placeholder="address"
-                            onChange={(e) => {
-                              setAddress(e.target.value);
-                            }}
-                            className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg mt-2"
-                          />
+                          <div className="space-y-4 ">
+                            <div>
+                              <label
+                                htmlFor="wilaya"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                State
+                              </label>
+                              <select
+                                id="state"
+                                name="state"
+                                required
+                                value={state}
+                                onChange={(e) => setState(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
+                              >
+                                <option value="" className="text-gray-700">
+                                  Select State
+                                </option>
+                                {data.states.map((d, i) => (
+                                  <option
+                                    key={i}
+                                    value={d.name}
+                                    className="text-gray-700"
+                                  >
+                                    {d.id} - {d.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="city"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                City
+                              </label>
+                              <select
+                                type="text"
+                                id="city"
+                                name="city"
+                                required
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
+                                placeholder="Enter city"
+                              >
+                                <option>Select City</option>
+                                {state &&
+                                  data.states
+                                    .find((s) => s.name === state)
+                                    ?.city.map((c, i) => (
+                                      <option key={i}>{c}</option>
+                                    ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="street"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Street Address
+                              </label>
+                              <input
+                                type="text"
+                                id="street"
+                                name="street"
+                                required
+                                value={street}
+                                onChange={(e) => setStreet(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Enter street address"
+                              />
+                            </div>
+                          </div>
                         )}
                       </div>
-                      <div >
+                      <div>
                         {!isAddAddress ? (
                           <button
                             className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700"
@@ -515,14 +771,18 @@ export default function Profile() {
                           </button>
                         ) : (
                           <div className="flex space-x-4 w-full">
-                          <button onClick={() => addAddressFunction()} 
-                          className="px-4 py-2 rounded-lg text-white bg-black flex-1 flex items-center justify-center gap-2">
-                            Save {isLoading && <LoadingSpinner />}
-                          </button>
-                          <button onClick={() => setIsAddAddress(false)} 
-                          className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 flex-1">
-                            Cancel
-                          </button>
+                            <button
+                              onClick={() => addAddressFunction()}
+                              className="px-4 py-2 rounded-lg text-white bg-black flex-1 flex items-center justify-center gap-2"
+                            >
+                              Save {isLoading && <LoadingSpinner />}
+                            </button>
+                            <button
+                              onClick={() => setIsAddAddress(false)}
+                              className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 flex-1"
+                            >
+                              Cancel
+                            </button>
                           </div>
                         )}
                       </div>
@@ -540,44 +800,60 @@ export default function Profile() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Order History
             </h2>
-            {cart.length > 0 ? (
-              <div className="space-y-4">
-                {cart.map((item, index) => (
-                  <div
-                    key={index}
-                    className="border border-gray-200 rounded-lg p-4"
-                  >
-                    <div className="flex items-center gap-4 max-[450px]:flex-col max-[450px]:items-center">
-                      <div className="flex items-center gap-4 justify-between w-full flex-1">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">
-                          {item.name}
-                        </h3>
-                        <p className="text-gray-600">
-                          Quantity: {item.quantity}
+            {userOrders.length > 0 ? (
+              userOrders ? (
+                <div className="space-y-10">
+                  {userOrders.map((order, i) => (
+                    <div key={i} className="space-y-5">
+                      <div className="flex justify-between items-center">
+                        <div className="flex gap-2 text-sm text-gray-600 mt-2 flex-col sm:flex-row sm:gap-10">
+                        <p>
+                          Order #{order._id.toUpperCase().slice(-6)}
                         </p>
-                        <p className="text-gray-900 font-medium">
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
-                      </div>
-                      <div className="text-right">
+                        <p>Total : {order.totalPrice}$</p>
+                        </div>
                         <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                          Delivered
+                          {order.status}
                         </span>
-                        <p className="text-sm text-gray-600 mt-2">
-                          Order #12345
-                        </p>
                       </div>
+                      {order.products.map((item, index) => (
+                        <div
+                          key={index}
+                          className="border border-gray-200 rounded-lg p-4"
+                        >
+                          <div className="flex items-center gap-4 max-[450px]:flex-col max-[450px]:items-center">
+                            <div className="flex items-center gap-4 justify-between w-full flex-1">
+                              <img
+                                src={`${import.meta.env.VITE_BASE_URL}${
+                                  item.image
+                                }`}
+                                alt={item.productName}
+                                className="w-20 h-20 object-cover rounded-lg"
+                              />
+                              <div className="flex-1">
+                                <h3 className="font-medium text-gray-900">
+                                  {item.productName}
+                                </h3>
+                                <p className="text-gray-600 font-medium">
+                                  Quantity : {item.quantity}
+                                </p>
+                                <p className="text-gray-900 font-medium">
+                                  $
+                                  {item.productPrice.toFixed(
+                                    2
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <Loader />
+              )
             ) : (
               <div className="text-center py-8">
                 <FaShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -610,10 +886,17 @@ export default function Profile() {
                     <PasswordInput
                       password={currentPassword}
                       setPassword={setCurrentPassword}
-                      style={`${passwordMessage && typeof passwordMessage==='string' ? 'border-red-200' : 'border-gray-200'}`}
+                      style={`${
+                        passwordMessage && typeof passwordMessage === "string"
+                          ? "border-red-200"
+                          : "border-gray-200"
+                      }`}
                     />
-                    {passwordMessage && typeof passwordMessage==='string' && 
-                    <p className="text-red-500 text-sm mt-1 font-medium px-4">{passwordMessage}</p>}
+                    {passwordMessage && typeof passwordMessage === "string" && (
+                      <p className="text-red-500 text-sm mt-1 font-medium px-4">
+                        {passwordMessage}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -622,7 +905,11 @@ export default function Profile() {
                     <PasswordInput
                       password={newPassword}
                       setPassword={setNewPassword}
-                      style={`${passwordMessage && typeof passwordMessage==='object' ? 'border-red-200' : 'border-gray-200'}`}
+                      style={`${
+                        passwordMessage && typeof passwordMessage === "object"
+                          ? "border-red-200"
+                          : "border-gray-200"
+                      }`}
                     />
                   </div>
                   <div>
@@ -632,16 +919,25 @@ export default function Profile() {
                     <PasswordInput
                       password={confirmPassword}
                       setPassword={setConfirmPassword}
-                      style={`${passwordMessage && typeof passwordMessage==='object' ? 'border-red-200' : 'border-gray-200'}`}
+                      style={`${
+                        passwordMessage && typeof passwordMessage === "object"
+                          ? "border-red-200"
+                          : "border-gray-200"
+                      }`}
                     />
                   </div>
-                  {passwordMessage && typeof passwordMessage==='object' &&
+                  {passwordMessage && typeof passwordMessage === "object" && (
                     <div>
-                      {passwordMessage.map((m,i)=>
-                        <p key={i} className="text-red-500 text-sm mt-1 font-medium px-4">{m.msg}</p>
-                      )}
+                      {passwordMessage.map((m, i) => (
+                        <p
+                          key={i}
+                          className="text-red-500 text-sm mt-1 font-medium px-4"
+                        >
+                          {m.msg}
+                        </p>
+                      ))}
                     </div>
-                  }
+                  )}
                   <button className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2">
                     Update Password {isLoading && <LoadingSpinner />}
                   </button>
@@ -764,25 +1060,27 @@ export default function Profile() {
                 Delete account
               </button>
               {deleteAccount && (
-                  <form
-                    className="flex w-full gap-4 flex-col sm:flex-row"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      deleteUserFunction();
-                    }}
-                  >
-                    <div className="flex-1 w-full">
+                <form
+                  className="flex w-full gap-4 flex-col sm:flex-row"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    deleteUserFunction();
+                  }}
+                >
+                  <div className="flex-1 w-full">
                     <PasswordInput
                       placeholder="password"
                       password={currentPassword}
                       setPassword={setCurrentPassword}
-                      style={`${deleteMessage ? 'border-red-200' : 'border-gray-200'}`}
+                      style={`${
+                        deleteMessage ? "border-red-200" : "border-gray-200"
+                      }`}
                     />
                     {deleteMessage && (
-                    <p className="text-xs text-red-500 mt-2 px-4 font-medium">
-                      {deleteMessage}
-                    </p>
-                  )}
+                      <p className="text-xs text-red-500 mt-2 px-4 font-medium">
+                        {deleteMessage}
+                      </p>
+                    )}
                   </div>
                   <div className="space-x-4 flex w-full sm:w-fit">
                     <button
@@ -795,13 +1093,13 @@ export default function Profile() {
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg flex-1"
                       onClick={() => {
                         setDeleteAccount(false);
-                        setCurrentPassword('')
+                        setCurrentPassword("");
                       }}
                     >
                       Cancel
                     </button>
                   </div>
-                  </form>
+                </form>
               )}
             </div>
           </div>
@@ -825,7 +1123,12 @@ export default function Profile() {
                   return (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        if (tab.id === "orders" && !userOrders) {
+                          getUserOrdersFunction();
+                        }
+                      }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         activeTab === tab.id
                           ? "bg-black text-white"
@@ -854,19 +1157,27 @@ export default function Profile() {
           {user && user.data ? (
             <div className="flex-1">{renderContent()}</div>
           ) : (
-            <div className="flex-1">
-              <Loader style={"left-[50%] tranform -translate-x-1/2 mt-20"} />
+            <div className="flex-1 h-screen">
+              <Loader style={"left-1/2 tranform -translate-x-1/2 mt-50"} />
             </div>
           )}
         </div>
 
-        {confirmation && <Confirmation 
-                isOpen={()=>{return null}}
-                onClose={()=>{setConfirmation(false)}}
-                onConfirm={()=>{logOut()}}
-                message='Do you want to sign out ?'
-                confirmText='Confirm'
-            />}
+        {confirmation && (
+          <Confirmation
+            isOpen={() => {
+              return null;
+            }}
+            onClose={() => {
+              setConfirmation(false);
+            }}
+            onConfirm={() => {
+              logOut();
+            }}
+            message="Do you want to sign out ?"
+            confirmText="Confirm"
+          />
+        )}
       </div>
     </div>
   );

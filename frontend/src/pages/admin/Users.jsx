@@ -110,7 +110,7 @@ export default function Users() {
               >
                 {users.image
                  ? <img
-                  src={user.image || "/default-avatar.png"}
+                 src={`${import.meta.env.VITE_BASE_URL}${user.image}`}
                   alt={user.firstName}
                   className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 shadow-sm"
                 />

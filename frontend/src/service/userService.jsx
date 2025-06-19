@@ -183,16 +183,30 @@ export async function deleteUser(id, password) {
   }
 }
 
-export async function updateUser(id, body) {
+export async function updateUser(id, formData,user,profileImage) {
+  const newData = new FormData()
+  newData.append('firstName',formData.firstName);
+  newData.append('lastName',formData.lastName);
+  newData.append('email',formData.email);
+  newData.append('gender',formData.gender);
+  newData.append('birthday',formData.birthday)
+  if(profileImage){
+    newData.append('image',formData.image);
+  }
+  if(user.data.phone){
+    newData.append('phone',formData.phone);
+  }
+  if(user.data.address){
+    newData.append('address',formData.address)
+  }
   try {
     const res = await fetch(`${import.meta.env.VITE_BASE_URL_API}/user/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         "x-api-key": import.meta.env.VITE_MY_API_KEY,
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(body),
+      body: newData,
     });
     const data = await res.json();
     console.log(data);

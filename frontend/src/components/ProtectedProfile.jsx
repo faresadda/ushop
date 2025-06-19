@@ -10,9 +10,9 @@ export default function ProtectedProfile({children}) {
     }
   }, [id, token]);
 
-  if (user && user.data) {
+  if (token && id) {
     return children
   }
   else{
-    return <Navigate to="/account/login" replace />;
+    return <Navigate to="/login" replace />;
 }}

@@ -10,12 +10,14 @@ import {
 import { useProductsContext } from "../../context/productsContext";
 import { useOrdersContext } from "../../context/orderContext";
 import data from "../../data/shipping_prices.json";
-import { addOrder } from "../../service/orderService";
+import { addOrderNoUser, addOrderUser } from "../../service/orderService";
+import { useUserContext } from "../../context/userContext";
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cart, setCart } = useProductsContext();
+  const { cart } = useProductsContext();
   const { order, cartProducts } = useOrdersContext();
+  const { user, id, token } = useUserContext();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -41,21 +43,9 @@ export default function Checkout() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate required fields
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.phone ||
-      !formData.state ||
-      !formData.city ||
-      !formData.street
-    ) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
     setLoading(true);
     const address = `${formData.state} , ${formData.city} , ${formData.street}`;
+    console.log(address)
 
     // Format products data
     const formattedProducts = products.map((product) => ({
@@ -64,19 +54,45 @@ export default function Checkout() {
       quantity: product.quantity,
     }));
 
-    const orderData = {
-      firstName: formData.firstName.trim(),
-      lastName: formData.lastName.trim(),
-      phone: formData.phone.trim(),
-      address: address.trim(),
-      products: formattedProducts,
-      shippingType: formData.shippingType,
-      notes: formData.notes?.trim() || "",
-    };
+    let orderData;
+    let res;
+    if (token && id && user) {
+      orderData = {
+        userId: id,
+        phone: formData.phone.trim(),
+        address: address.trim(),
+        products: formattedProducts,
+        shippingType: formData.shippingType,
+        notes: formData.notes?.trim() || "",
+      };
+      res = await addOrderUser(orderData);
+    } else {
+      orderData = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        phone: formData.phone.trim(),
+        address: address.trim(),
+        products: formattedProducts,
+        shippingType: formData.shippingType,
+        notes: formData.notes?.trim() || "",
+      };
+      // Validate required fields
+      if (
+        !formData.firstName ||
+        !formData.lastName ||
+        !formData.phone ||
+        !formData.state ||
+        !formData.city ||
+        !formData.street
+      ) {
+        toast.error("Please fill in all required fields");
+        return;
+      }
+      res = await addOrderNoUser(orderData);
+    }
 
-    console.log("Submitting order data:", orderData);
-    const res = await addOrder(orderData);
     setLoading(false);
+    console.log("Submitting order data:", orderData);
 
     if (res && res.status === "success") {
       toast.success("Order submitted successfully");
@@ -87,7 +103,11 @@ export default function Checkout() {
     }
   };
 
-  const shipping = formData.state
+  const shipping = user?.data?.address
+    ? data.states.find((s) => user.data.address.includes(s.name))?.[
+        formData.shippingType === "home" ? "home_shipping" : "office_shipping"
+      ]
+    : formData.state
     ? data.states.find((s) => s.name === formData.state)?.[
         formData.shippingType === "home" ? "home_shipping" : "office_shipping"
       ]
@@ -108,135 +128,143 @@ export default function Checkout() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
             Checkout
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {!id && !token && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  required
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  placeholder="Enter first name"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  required
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  placeholder="Enter last name"
+                />
+              </div>
+            </div>
+          )}
+
+          {!user?.data.phone && (
             <div>
               <label
-                htmlFor="firstName"
+                htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                First Name
+                Phone Number
               </label>
               <input
-                type="text"
-                id="firstName"
-                name="firstName"
+                type="tel"
+                id="phone"
+                name="phone"
                 required
-                value={formData.firstName}
+                value={formData.phone}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
-                placeholder="Enter first name"
+                placeholder="05xxxxxxxx"
+                pattern="^0[5-7][0-9]{8}$"
               />
             </div>
+          )}
 
-            <div>
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                required
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
-                placeholder="Enter last name"
-              />
-            </div>
-          </div>
+          {!user?.data.address && (
+            <>
+              <div>
+                <label
+                  htmlFor="wilaya"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  State
+                </label>
+                <select
+                  id="state"
+                  name="state"
+                  required
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
+                >
+                  <option value="" className="text-gray-700">
+                    Select State
+                  </option>
+                  {data.states.map((d, i) => (
+                    <option key={i} value={d.name} className="text-gray-700">
+                      {d.id} - {d.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              required
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
-              placeholder="05xxxxxxxx"
-              pattern="^0[5-7][0-9]{8}$"
-            />
-          </div>
+              <div>
+                <label
+                  htmlFor="city"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  City
+                </label>
+                <select
+                  type="text"
+                  id="city"
+                  name="city"
+                  required
+                  value={formData.commune}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
+                  placeholder="Enter city"
+                >
+                  <option>Select City</option>
+                  {formData.state &&
+                    data.states
+                      .find((state) => state.name === formData.state)
+                      ?.city.map((c, i) => <option key={i}>{c}</option>)}
+                </select>
+              </div>
 
-          <div>
-            <label
-              htmlFor="wilaya"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              State
-            </label>
-            <select
-              id="state"
-              name="state"
-              required
-              value={formData.state}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
-            >
-              <option value="" className="text-gray-700">
-                Select State
-              </option>
-              {data.states.map((d, i) => (
-                <option key={i} value={d.name} className="text-gray-700">
-                  {d.id} - {d.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="city"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              City
-            </label>
-            <select
-              type="text"
-              id="city"
-              name="city"
-              required
-              value={formData.commune}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-gray-500"
-              placeholder="Enter city"
-            >
-              <option>Select City</option>
-              {formData.state &&
-                data.states
-                  .find((state) => state.name === formData.state)
-                  ?.city.map((c, i) => <option key={i}>{c}</option>)}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="street"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Street Address
-            </label>
-            <input
-              type="text"
-              id="street"
-              name="street"
-              required
-              value={formData.street}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
-              placeholder="Enter street address"
-            />
-          </div>
+              <div>
+                <label
+                  htmlFor="street"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Street Address
+                </label>
+                <input
+                  type="text"
+                  id="street"
+                  name="street"
+                  required
+                  value={formData.street}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                  placeholder="Enter street address"
+                />
+              </div>
+            </>
+          )}
 
           <div>
             <label
@@ -298,9 +326,47 @@ export default function Checkout() {
             <h2 className="text-xl font-semibold text-gray-900">
               Order Summary
             </h2>
-            <FaShoppingBag className="text-primary text-xl" />
+            <FaShoppingBag className=" text-xl" />
           </div>
 
+          <div className="flex flex-wrap justify-between gap-5 border-b border-gray-200 py-5 mb-5">
+            <div>
+              <label>Name</label>
+
+              <p className="text-sm font-medium">
+                {token && id
+                  ? `${user?.data?.firstName} ${user?.data?.lastName}`
+                  : formData.firstName
+                  ? `${formData.firstName} ${formData.lastName}`
+                  : ".........."}
+              </p>
+            </div>
+            <div>
+              <label>Phone</label>
+              <p className="text-sm font-medium">
+                {token && id && user?.data?.phone
+                  ? user.data.phone
+                  : formData.phone
+                  ? formData.phone
+                  : ".........."}
+              </p>
+            </div>
+
+            <div>
+              <label>Address</label>
+              <p className="text-sm font-medium">
+                {token && id && user?.data?.address
+                  ? user.data.address
+                  : formData.state
+                  ? formData.city
+                    ? formData.street
+                      ? `${formData.state} , ${formData.city} , ${formData.street}`
+                      : `${formData.state} , ${formData.city}`
+                    : formData.state
+                  : ".........."}
+              </p>
+            </div>
+          </div>
           {/* Products List */}
           {cartProducts ? (
             <div className="space-y-4 mb-6">

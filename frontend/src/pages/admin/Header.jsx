@@ -22,7 +22,14 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
         <FaHeadphonesAlt className="text-2xl"/>
         <FaBell className="text-2xl text-yellow-500" />
         {user && user.data
-          ? <span className="text-xs rounded-full bg-blue-700 text-white p-2 cursor-pointer"
+          ? user.data.image
+          ? <img
+            src={`${import.meta.env.VITE_BASE_URL}${user.data.image}`}
+            alt="Profile"
+            className="w-8 h-8 rounded-full object-cover"
+            onClick={()=>navigate('/admin/profile')}
+          />
+          : <span className="text-xs rounded-full bg-blue-700 text-white p-2 cursor-pointer"
               onClick={() => navigate("/admin/profile")}>
              {user.data.firstName.slice(0,1)}{user.data.lastName.slice(0,1)}</span>
           : <Loader />}

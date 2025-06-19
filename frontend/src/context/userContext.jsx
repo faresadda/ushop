@@ -17,10 +17,10 @@ export function UserProvider({ children }) {
 
   const getUserFunction = async () => {
     if (token && id) {
-      const userData = await getUser(id, token);
-      if (userData && userData.status === "success") {
-        setUser(userData);
-        return userData
+      const res = await getUser(id, token);
+      if (res && res.status === "success") {
+        setUser(res);
+        return res
       } else {
         setUser(null);
         return null
@@ -35,7 +35,7 @@ export function UserProvider({ children }) {
     setId(null);
     setToken(null);
     setConfirmation(false);
-    navigate("/account/login");
+    navigate("/login");
     toast.success("Account logged out");
   };
 

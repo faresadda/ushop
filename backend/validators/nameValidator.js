@@ -6,14 +6,15 @@ const nameValidator = [
     .isLength({ min: 2 })
     .withMessage("first name is too short")
     .trim()
-    .custom((value)=>{
+    .custom((value) => {
       if (/\d/.test(value)) {
-          throw new Error("first name must not contain numbers");
-        }
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-          throw new Error("first name must not contain special characters");
-        }
-   }),
+        throw new Error("first name must not contain numbers");
+      }
+      if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+        throw new Error("first name must not contain special characters");
+      }
+      return true;
+    }),
 
   check("lastName")
     .notEmpty()
@@ -21,13 +22,14 @@ const nameValidator = [
     .isLength({ min: 2 })
     .withMessage("last name is too short")
     .trim()
-    .custom((value)=>{
+    .custom((value) => {
       if (/\d/.test(value)) {
-          throw new Error("last name must not contain numbers");
-        }
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-          throw new Error("last name must not contain special characters");
-        }
-  }),
-]
-module.exports = nameValidator
+        throw new Error("last name must not contain numbers");
+      }
+      if (/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+        throw new Error("last name must not contain special characters");
+      }
+      return true;
+    }),
+];
+module.exports = nameValidator;

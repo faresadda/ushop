@@ -159,3 +159,10 @@ input[type=number]::-webkit-outer-spin-button {
   animation: typing-shadow 0.5s alternate infinite ease;
   animation-delay: 0.3s;
 }
+
+@media (max-width:600px) {
+  body{font-size: 15px;}
+}
+@media (max-width:500px) {
+  body{font-size: 14px;}
+}

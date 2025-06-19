@@ -6,13 +6,8 @@ const phoneValidator = require("../validators/phoneValidator");
 const addressValidator = require("../validators/addressValidator");
 const {authorizationUser , authorizationAdmin} = require("../middlewares/authorization")
 
-router.route("/order")
-  .post(
-    nameValidator,
-    phoneValidator,
-    addressValidator,
-    ordersService.addOrder
-  );
+router.route("/addordernouser").post(nameValidator,phoneValidator,addressValidator,ordersService.addOrderNoUsers);
+router.route("/addorderuser").post(authorizationUser,ordersService.addOrderUsers);
 
 router.route("/getorders").get(authorizationUser,authorizationAdmin,ordersService.getOrders)
 router.route("/getpendingorders").get(authorizationUser,authorizationAdmin,ordersService.getPendingOrders)
@@ -23,5 +18,7 @@ router.route("/getreturnedorders").get(authorizationUser,authorizationAdmin,orde
 router.route("/getdeliveredorders").get(authorizationUser,authorizationAdmin,ordersService.getDeliveredOrders)
 
 router.route("/updatestatus/:id").put(authorizationUser,authorizationAdmin,ordersService.updateStatus)
+
+router.route("/getuserorders/:id").get(authorizationUser,ordersService.getUserOrders)
 
 module.exports = router;
