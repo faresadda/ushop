@@ -366,6 +366,8 @@ export default function Checkout() {
                   : ".........."}
               </p>
             </div>
+            <button className="bg-black py-2 px-4 rounded-lg font-medium text-white"
+               onClick={()=>navigate('/profile')}>Change information</button>
           </div>
           {/* Products List */}
           {cartProducts ? (

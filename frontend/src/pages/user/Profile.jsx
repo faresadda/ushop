@@ -60,7 +60,6 @@ export default function Profile() {
     gender: "",
     birthday: "",
     phone: "",
-    address: "",
   });
   const [profileImage, setProfileImage] = useState("");
 
@@ -78,7 +77,6 @@ export default function Profile() {
       // Handle text inputs
       setFormData((prev) => ({
         ...prev,
-        address: `${state} , ${city} , ${street}`,
         [name]: value,
       }));
     }
@@ -119,7 +117,8 @@ export default function Profile() {
   };
 
   const updateUserFunction = async () => {
-    const res = await updateUser(id, formData, user, profileImage);
+    const res = await updateUser(id, 
+      {...formData,address: `${state} , ${city} , ${street}`}, user, profileImage);
     setIsLoading(false);
     if (res && res.status === "success") {
       setUser(res);
@@ -144,11 +143,12 @@ export default function Profile() {
         phone: res.data.phone || "",
         address: res.data.address || "",
       });
-
+      if(res.data.address){
       const [state, city, street] = res.data.address.split(" , ");
       setState(state);
       setCity(city);
       setStreet(street);
+      }
     };
 
     fetchUser();

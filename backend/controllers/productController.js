@@ -63,7 +63,7 @@ const addProduct = asyncHandler(async (req, res) => {
 });
 
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  const products = (await Product.find({})).reverse();
   res
     .status(200)
     .json(appData.createData("Products retrieved successfully", products));

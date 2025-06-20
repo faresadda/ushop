@@ -1,0 +1,552 @@
+[
+  {
+    "image": "/uploads/products/phone2.png",
+    "name": "iphone 13 pro",
+    "description": "Apple iPhone 13 Pro 13pro 128/256/512GB/1TB ROM 6GB RAM 6.1\" Super Retina OLED A15 IOS Face ID NFC Unlocked 5G 98% New Cellphone",
+    "category": "phones",
+    "price": 472.0,
+    "oldPrice": 590.0,
+    "discount": 20,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Silver",
+          "Graphite",
+          "Gold"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/phones3.png",
+    "name": "120W Fast Charging",
+    "description": "120W Fast Charging 4 Ports Mobile Phone Charger QC3.0 USB Type C Chargers Dual PD Wall Adapter EU/US/UK Plug for iPhone15 Xiaomi",
+    "category": "phones",
+    "price": 2.44,
+    "oldPrice": 3.94,
+    "discount": 38,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "4 Ports"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "White"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/phones4.png",
+    "name": "200000mAh Power Bank",
+    "description": "200000mAh Power Bank 120W Super Fast Charger Battery Large Capacity Digital Display Power Bank For Iphone Samsung Huawei Xiaomi",
+    "category": "phones",
+    "price": 9.11,
+    "oldPrice": 18.21,
+    "discount": 50,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "200000mAh"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Blue"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/pc2.png",
+    "name": "AKPAD-Windows 10 11 Pro",
+    "description": "AKPAD-Windows 10 11 Pro Gaming IPS Laptop, 4700U Max Ram 32GB Rom 2TB SSD Metal Computer, 5G WiFi, Bluetooth, AMD Ryzen 7",
+    "category": "computer",
+    "price": 403.59,
+    "oldPrice": 593.52,
+    "discount": 32,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "16GB RAM / 1TB SSD",
+          "32GB RAM / 2TB SSD"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Silver",
+          "Gray"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/pc3.png",
+    "name": "Gaming Keyboard",
+    "description": "K617 RGB USB Mini Mechanical Gaming Keyboard Red Switch 61 Keys Wired detachable cable,portable for travel",
+    "category": "computer",
+    "price": 20.51,
+    "oldPrice": 590,
+    "discount": 20,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "61 Keys"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Pink"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/pc4.png",
+    "name": "AMD New Ryzen 7 5700X",
+    "description": "AMD New Ryzen 7 5700X R7 5700X 3.4GHz 8 Core 16 Thread CPU Processor 7NM L3=32M Socket AMD AM4 Gaming processador",
+    "category": "computer",
+    "price": 175.89,
+    "oldPrice": 274.85,
+    "discount": 36,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "8 Cores"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/forn2.png",
+    "name": "Modern Nordic Dressing Chair",
+    "description": "Modern Nordic Dressing Chair Velvet Home Living Room Dining Chairs Bedroom Furniture Makeup Stool Nail Chair",
+    "category": "forniture",
+    "price": 70.0,
+    "oldPrice": 114.76,
+    "discount": 39,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "Standard"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Green",
+          "Pink",
+          "Gray"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/forn3.png",
+    "name": "Tall Arched Cabinet",
+    "description": "71\" Tall Arched Cabinet, 5-Tier Arched Bookcase Storage Display Cabinet with Doors and Shelves\uff0cfor Living Room , Natural Oak",
+    "category": "forniture",
+    "price": 106.85,
+    "oldPrice": 267.12,
+    "discount": 60,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "71 inch"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Oak",
+          "White"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/forn4.png",
+    "name": "Simple Folding Table",
+    "description": "Simple Folding Table Dormitory Writing Study Table and Chair Single Dining Table Dining Rectangular Computer Desk Modern Wood",
+    "category": "forniture",
+    "price": 68.25,
+    "oldPrice": 89.81,
+    "discount": 24,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "100x50cm",
+          "120x60cm"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Wood",
+          "Black"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/clothes2.png",
+    "name": "Men's Jeans Japanese Vintage",
+    "description": "Spring Autumn New Men's Jeans Japanese Vintage Elastic Waist Casual Straight-leg Pants Trendy Wide-leg Trousers Loose Fit",
+    "category": "clothes",
+    "price": 12.0,
+    "oldPrice": 27.9,
+    "discount": 57,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "M",
+          "L",
+          "XL"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Dark Blue",
+          "Light Blue"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/clothes3.png",
+    "name": "Men's fashion hoodie",
+    "description": "Men's new fashion hoodie, Casual Daily Drawstring Hooded Sweatshirt Street View Print, front kangaroo pocket, men's jacket",
+    "category": "clothes",
+    "price": 19.62,
+    "oldPrice": 37.03,
+    "discount": 47,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Gray",
+          "Red"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/clothes4.png",
+    "name": "T-shirt Summer",
+    "description": "Trendy 2023 Men's Ice Silk Short Sleeve T-shirt Summer Printed Half Sleeve Body Confort Base Layer Top Serious Wear",
+    "category": "clothes",
+    "price": 7.9,
+    "oldPrice": 18.38,
+    "discount": 57,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "M",
+          "L",
+          "XL"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "White",
+          "Black"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/shoes2.png",
+    "name": "Summer New Men's Low-Top Skateboard Shoes",
+    "description": "2024 Summer New Men's Low-Top Skateboard Shoes Youth Student Online Sports Niche Shoes Live Broadcast Men's Shoes",
+    "category": "shoes",
+    "price": 26.28,
+    "oldPrice": 55.92,
+    "discount": 53,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "42",
+          "43",
+          "44"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "White",
+          "Gray"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/shoes3.png",
+    "name": "Mary Janes Shoes",
+    "description": "2025 Spring Autumn Women Double Buckle Mary Janes Shoes Patent Leather Dress Square Head Square Heel Solid Color Women's Shoes",
+    "category": "shoes",
+    "price": 7.8,
+    "oldPrice": 12.0,
+    "discount": 35,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "36",
+          "37",
+          "38"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Red"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/shoes4.png",
+    "name": "Men's leather canvas shoes",
+    "description": "Men's leather canvas shoes men's board shoes with breathable shoes trend shoes Korean version casual shoes men's leather shoes",
+    "category": "shoes",
+    "price": 27.4,
+    "oldPrice": 58.31,
+    "discount": 53,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "41",
+          "42",
+          "43"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Brown",
+          "Black"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/elec2.png",
+    "name": "Waterproof Smart Watch",
+    "description": "1.83'' Waterproof Smart Watch with Message Answer Call Sleep Monitoring Sports Pedometer Information Alerts For iPhone Android",
+    "category": "electronics",
+    "price": 9.94,
+    "oldPrice": 26.26,
+    "discount": 62,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "1.83 inch"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Blue",
+          "Pink"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/elec3.png",
+    "name": "4K Digital Camera",
+    "description": "4K Digital Camera for Photography and 18X Digital Zoom Camera 64MP Compact Vlogging Camera 3'' 180\u00b0 Flip Screen with Flash",
+    "category": "electronics",
+    "price": 68.56,
+    "oldPrice": 120.28,
+    "discount": 43,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "64MP"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Silver"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/elec4.png",
+    "name": "Handheld Video Game",
+    "description": "Open Source RX6H Retro Handheld Video Game Console Linux System 3.5 Inch IPS Screen Portable Pocket Video Player 64GB Games",
+    "category": "electronics",
+    "price": 54.43,
+    "oldPrice": 108.86,
+    "discount": 60,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "64GB"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Gray",
+          "White"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/acc2.png",
+    "name": "Fashion Reading Glasses",
+    "description": "Fashion Reading Glasses Anti-Blue Light Women Men Computer Presbyopia Hyperopia Reading Eyeglasses+1.0+1.5+2.0+2.5+3.0+3.5+4.0",
+    "category": "accessories",
+    "price": 0.89,
+    "oldPrice": 1.77,
+    "discount": 50,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "+1.0",
+          "+2.0",
+          "+3.0"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Transparent"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/acc3.png",
+    "name": "Retro Baseball Cap Versatile Sunscreen",
+    "description": "Retro Baseball Cap Versatile Sunscreen and Shading Hat Breathable Adjustable Hip Hop Gorras Trucker Cotton Cap Dad Hats",
+    "category": "accessories",
+    "price": 7.57,
+    "oldPrice": 590,
+    "discount": 71,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "One Size"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Beige",
+          "Black",
+          "Navy"
+        ]
+      }
+    ]
+  },
+  {
+    "image": "/uploads/products/acc4.png",
+    "name": "Fitness Weight Lifting Wristband Gloves",
+    "description": "Fitness Weight Lifting Wristband Gloves Gym Gloves for Men Women Body Building Training Sports Exercise Cycling Glove Shockproof",
+    "category": "accessories",
+    "price": 6.76,
+    "oldPrice": 24.13,
+    "discount": 72,
+    "stock": 100,
+    "attributes": [
+      {
+        "name": "Size",
+        "values": [
+          "M",
+          "L",
+          "XL"
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "Gray"
+        ]
+      }
+    ]
+  }
+]

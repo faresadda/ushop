@@ -335,14 +335,14 @@ const addAddress = asyncHandler(async (req, res) => {
 });
 
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({role:'user'});
+  const users = (await User.find({role:'user'})).reverse();
   res
     .status(200)
     .json(appData.createData("Users retrieved successfully", users));
 });
 
 const getAdmins = asyncHandler(async (req, res) => {
-  const admins = await User.find({role:'admin'});
+  const admins = (await User.find({role:'admin'})).reverse();
   res
     .status(200)
     .json(appData.createData("Admins retrieved successfully", admins));

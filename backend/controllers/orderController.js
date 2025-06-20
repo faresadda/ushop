@@ -286,49 +286,49 @@ const addOrderUsers = asyncHandler(async (req, res) => {
 
     
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({});
+  const orders = (await Order.find({})).reverse();
   res
     .status(200)
     .json(appData.createData("orders fetched successfully", orders));
 });
 
 const getPendingOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "pending" });
+  const orders = await Order.find({ status: "pending" }).reverse();
   res
     .status(200)
     .json(appData.createData("pending orders fetched successfully", orders));
 });
 
 const getCancelledOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "cancelled" });
+  const orders = await Order.find({ status: "cancelled" }).reverse();
   res
     .status(200)
     .json(appData.createData("cancelled orders fetched successfully", orders));
 });
 
 const getConfirmedOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "confirmed" });
+  const orders = await Order.find({ status: "confirmed" }).reverse();
   res
     .status(200)
     .json(appData.createData("confirmed orders fetched successfully", orders));
 });
 
 const getShippedOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "shipped" });
+  const orders = await Order.find({ status: "shipped" }).reverse();
   res
     .status(200)
     .json(appData.createData("shipped orders fetched successfully", orders));
 });
 
 const getReturnedOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "returned" });
+  const orders = await Order.find({ status: "returned" }).reverse();
   res
     .status(200)
     .json(appData.createData("returned orders fetched successfully", orders));
 });
 
 const getDeliveredOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "delivered" });
+  const orders = await Order.find({ status: "delivered" }).reverse();
   res
     .status(200)
     .json(appData.createData("delivered orders fetched successfully", orders));
@@ -354,7 +354,7 @@ const updateStatus = asyncHandler(async (req, res) => {
 
 const getUserOrders = asyncHandler(async (req,res) => {
   const id = req.params.id
-  const userOrders = await Order.find({userId : id})
+  const userOrders = await Order.find({userId : id}).reverse()
   if(!userOrders){
     return res.status(404).json(appError.createError(404,"User not found"))
   }

@@ -108,7 +108,7 @@ export default function Users() {
                 className="bg-gray-50 rounded-lg shadow-sm border border-gray-200 p-4 flex flex-col items-center text-center space-y-3
                  transition-all duration-300 hover:shadow-md overflow-x-auto"
               >
-                {users.image
+                {user.image
                  ? <img
                  src={`${import.meta.env.VITE_BASE_URL}${user.image}`}
                   alt={user.firstName}
