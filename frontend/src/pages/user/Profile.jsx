@@ -201,7 +201,6 @@ export default function Profile() {
     setIsLoading(false);
     if (res.status === "success") {
       setUserOrders(res.data);
-      toast.success("User orders fetched successfully");
     }
   };
 

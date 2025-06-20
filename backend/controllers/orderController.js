@@ -354,7 +354,7 @@ const updateStatus = asyncHandler(async (req, res) => {
 
 const getUserOrders = asyncHandler(async (req,res) => {
   const id = req.params.id
-  const userOrders = await Order.find({userId : id}).reverse()
+  const userOrders = await Order.find({userId : id})
   if(!userOrders){
     return res.status(404).json(appError.createError(404,"User not found"))
   }

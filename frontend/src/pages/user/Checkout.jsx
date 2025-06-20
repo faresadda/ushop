@@ -120,8 +120,7 @@ export default function Checkout() {
   return (
     <div className="min-h-screen bg-white py-8">
       {/* Shipping Information Form */}
-      <form
-        onSubmit={handleSubmit}
+      <div
         className="flex flex-col md:flex-row w-full space-x-5 px-4 sm:px-6 lg:px-8 space-y-8"
       >
         <div className="space-y-6 bg-primary rounded-xl shadow-sm p-6 sm:p-8 flex-1">
@@ -492,7 +491,7 @@ export default function Checkout() {
 
           {/* Submit Button */}
           <button
-            type="submit"
+            onClick={handleSubmit}
             disabled={loading}
             className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-black hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -506,7 +505,7 @@ export default function Checkout() {
             )}
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
