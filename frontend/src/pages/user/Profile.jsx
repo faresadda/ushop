@@ -7,7 +7,7 @@ import {
   FaCog,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { MdOutlineSecurity, MdOutlinePayment } from "react-icons/md";
+import { MdOutlineSecurity, MdOutlinePayment, MdSafetyDivider } from "react-icons/md";
 import { BsBoxSeam } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { useUserContext } from "../../context/userContext";
@@ -51,6 +51,7 @@ export default function Profile() {
   const [passwordMessage, setPasswordMessage] = useState("");
   const [editMessage, setEditMessage] = useState("");
   const [deleteMessage, setDeleteMessage] = useState("");
+  const [phoneMessage, setPhoneMessage] = useState("")
 
   const [formData, setFormData] = useState({
     image: "",
@@ -179,9 +180,13 @@ export default function Profile() {
     setIsLoading(true);
     const res = await addPhone(id, formData.phone);
     setIsLoading(false);
-    setUser(res);
-    toast.success("Phone added successfully");
-    setIsAddPhone("");
+    if(res.status==='success'){
+      setUser(res);
+      toast.success("Phone added successfully");
+    }
+    else{
+      setPhoneMessage(res.message)
+    }
   };
 
   const addAddressFunction = async () => {
@@ -189,9 +194,13 @@ export default function Profile() {
     setIsLoading(true);
     const res = await addAddress(id, a);
     setIsLoading(false);
-    setUser(res);
-    toast.success("Address added successfully");
-    setIsAddPhone("");
+    if(res.status==="success"){
+      setUser(res);
+      toast.success("Address added successfully");
+    }
+    else{
+      console.log(res.message)
+    }
   };
 
   const [userOrders, setUserOrders] = useState("");
@@ -619,8 +628,8 @@ export default function Profile() {
               <section className="mt-8 space-y-4">
                 {!user.data.phone && (
                   <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="flex justify-between flex-col md:flex-row md:items-center gap-5">
-                      <div>
+                    <div className="flex justify-between flex-col md:flex-row md:items-end gap-5">
+                      <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900">
                           Phone Number
                         </h3>
@@ -629,14 +638,17 @@ export default function Profile() {
                             Add your phone number for better communication
                           </p>
                         ) : (
+                          <div>
                           <input
                             type="number"
                             name="phone"
                             value={formData.phone}
                             placeholder="Phone"
                             onChange={handleChange}
-                            className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg mt-2"
+                            className={`w-full px-4 outline-0 py-2 border ${phoneMessage ? "border-red-200" : "border-gray-200"} rounded-lg mt-2`}
                           />
+                          <p className="text-xs text-red-500 font-medium mt-2 px-4">{phoneMessage[0].msg}</p>
+                          </div>
                         )}
                       </div>
                       <div>

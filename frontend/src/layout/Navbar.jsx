@@ -13,10 +13,9 @@ import { useUserContext } from "../context/userContext";
 import Loader from "../components/Loader";
 
 export default function Navbar() {
-  const { setProducts, productsCopy, cart, categories, dispatch, favorites } =
+  const { setProducts, productsCopy , cart, categories, dispatch, favorites } =
     useProductsContext();
   const { user, token, getUserFunction } = useUserContext();
-  const [cg, setCg] = useState("CATEGORIES");
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [menu, setMenu] = useState(true);
@@ -42,25 +41,15 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const categoriesList = [
-    { value: "phones", label: "Phones & Telecommunications", type: "ph" },
-    { value: "computer", label: "Computer,Office & Education", type: "co" },
-    { value: "furniture", label: "Furniture", type: "fo" },
-    { value: "clothes", label: "Clothes", type: "cl" },
-    { value: "shoes", label: "Shoes", type: "sh" },
-    { value: "electronics", label: "Consumer Electronics", type: "el" },
-    { value: "accessories", label: "Accessories", type: "ac" },
-  ];
 
   const handleCategory = (cat) => {
-    setCg(cat.value);
     navigate("/products");
     setProducts(
       productsCopy.filter((p) =>
         p.category.includes(cat.value),
       ),
     );
-    dispatch({ type: cat.type });
+    dispatch({ type: cat.value });
     setDropdownOpen(false);
     setMenu(true);
   };
@@ -87,7 +76,6 @@ export default function Navbar() {
               className="hover:text-yellow-500 transition"
               onClick={() => {
                 setProducts(productsCopy);
-                setCg("categories");
                 setMenu(true);
               }}
             >
@@ -100,7 +88,6 @@ export default function Navbar() {
               className="hover:text-yellow-500 transition"
               onClick={() => {
                 setProducts(productsCopy);
-                setCg("categories");
                 setMenu(true);
               }}
             >
@@ -124,13 +111,13 @@ export default function Navbar() {
                   className="fixed left-[50%] top-[80px] transform -translate-x-1/2 rounded-xl w-56 h-56 overflow-auto
                    bg-primary border border-gray-200 shadow-lg z-50"
                 >
-                  {categoriesList.map((cat) => (
+                  {categories.map((cat) => (
                     <li key={cat.value}>
                       <button
                         className="w-full text-black px-4 py-2 hover:bg-tertiary transition text-start"
                         onClick={() => handleCategory(cat)}
                       >
-                        {cat.label}
+                        {cat.title}
                       </button>
                     </li>
                   ))}
@@ -143,7 +130,6 @@ export default function Navbar() {
               href="#contact"
               className="hover:text-yellow-500 transition"
               onClick={() => {
-                setCg("categories");
                 setMenu(true);
               }}
             >
@@ -162,7 +148,6 @@ export default function Navbar() {
               onFocus={() => {
                 navigate("/products");
                 setProducts(productsCopy);
-                setCg("categories");
               }}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Products"
@@ -244,7 +229,6 @@ export default function Navbar() {
               onFocus={() => {
                 navigate("/products");
                 setProducts(productsCopy);
-                setCg("categories");
               }}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Products"
@@ -292,13 +276,13 @@ export default function Navbar() {
                   className="absolute rounded-2xl left-0 mt-2 w-56 h-56 overflow-auto bg-primary border border-gray-200 
                 shadow-lg z-50 animate-fade-in "
                 >
-                  {categoriesList.map((cat) => (
+                  {categories.map((cat) => (
                     <li key={cat.value}>
                       <button
                         className="w-full text-black px-4 py-2 hover:bg-tertiary text-start transition"
                         onClick={() => handleCategory(cat)}
                       >
-                        {cat.label}
+                        {cat.title}
                       </button>
                     </li>
                   ))}

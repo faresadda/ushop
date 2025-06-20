@@ -16,15 +16,17 @@ export const useProductsContext = () => {
 export function ProductsProvider({ children }) {
   const [products, setProducts] = useState(null);
 
+  const [productsCopy, setProductsCopy] = useState(null);
+
+
   useEffect(() => {
     const getProductsFunction = async () => {
       const res = await getProducts();
       setProducts(res.data);
+      setProductsCopy(res.data)
     };
     getProductsFunction();
   }, []);
-
-  const [productsCopy, setProductsCopy] = useState(products);
 
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
@@ -120,13 +122,13 @@ export function ProductsProvider({ children }) {
     },
   ];
 
-  const [state, dispatch] = useReducer(reducer, { category: "Phones" });
+  const [state, dispatch] = useReducer(reducer, { category: "All Products" });
   function reducer(state, action) {
     const category = categories.find((cat) => cat.value === action.type);
     if (category) {
       return { category: category.title };
     }
-    return state;
+    return { category: "All Products" };
   }
 
   const [attributes, setAttributes] = useState({});
@@ -141,6 +143,8 @@ export function ProductsProvider({ children }) {
         setCart,
 
         categories,
+
+        state,
         dispatch,
 
         favorites,

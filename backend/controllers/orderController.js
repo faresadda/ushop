@@ -293,42 +293,42 @@ const getOrders = asyncHandler(async (req, res) => {
 });
 
 const getPendingOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "pending" }).reverse();
+  const orders = await Order.find({ status: "pending" }).sort({ _id: -1 });
   res
     .status(200)
     .json(appData.createData("pending orders fetched successfully", orders));
 });
 
 const getCancelledOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "cancelled" }).reverse();
+  const orders = await Order.find({ status: "cancelled" }).sort({ _id: -1 });
   res
     .status(200)
     .json(appData.createData("cancelled orders fetched successfully", orders));
 });
 
 const getConfirmedOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "confirmed" }).reverse();
+  const orders = await Order.find({ status: "confirmed" }).sort({ _id: -1 });
   res
     .status(200)
     .json(appData.createData("confirmed orders fetched successfully", orders));
 });
 
 const getShippedOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "shipped" }).reverse();
+  const orders = await Order.find({ status: "shipped" }).sort({ _id: -1 });
   res
     .status(200)
     .json(appData.createData("shipped orders fetched successfully", orders));
 });
 
 const getReturnedOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "returned" }).reverse();
+  const orders = await Order.find({ status: "returned" }).sort({ _id: -1 });
   res
     .status(200)
     .json(appData.createData("returned orders fetched successfully", orders));
 });
 
 const getDeliveredOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ status: "delivered" }).reverse();
+  const orders = await Order.find({ status: "delivered" }).sort({ _id: -1 });
   res
     .status(200)
     .json(appData.createData("delivered orders fetched successfully", orders));

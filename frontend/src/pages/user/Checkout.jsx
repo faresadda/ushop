@@ -121,7 +121,7 @@ export default function Checkout() {
     <div className="min-h-screen bg-white py-8">
       {/* Shipping Information Form */}
       <div
-        className="flex flex-col md:flex-row w-full space-x-5 px-4 sm:px-6 lg:px-8 space-y-8"
+        className="flex flex-col md:flex-row w-full space-x-0 md:space-x-5 px-4 sm:px-6 lg:px-8 space-y-8 md:space-y-0"
       >
         <div className="space-y-6 bg-primary rounded-xl shadow-sm p-6 sm:p-8 flex-1">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">

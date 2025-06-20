@@ -12,18 +12,15 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FiFilter, FiShoppingBag } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
-import { BsGrid3X3Gap, BsListUl } from "react-icons/bs";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
 export default function Products({ style }) {
-  const { products, categories, favorites, setFavorites } =
+  const { products,setProducts,productsCopy , categories, favorites, setFavorites,state,dispatch } =
     useProductsContext();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("featured");
-  const [viewMode, setViewMode] = useState("grid");
   const productsPerPage = 15;
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -34,7 +31,7 @@ export default function Products({ style }) {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedCategory]);
+  }, []);
 
   const AddToFavorites = (e, product) => {
     e.stopPropagation();
@@ -73,6 +70,9 @@ export default function Products({ style }) {
   const prevPage = () => {
     if (currentPage > 1) goToPage(currentPage - 1);
   };
+
+  console.log(state.category)
+
 
   return (
     <div className="bg-white" id="products-section">
@@ -132,9 +132,9 @@ export default function Products({ style }) {
       <div className="px-5">
         <div className="flex gap-4 overflow-x-auto pb-4 px-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
           <p
-            onClick={() => setSelectedCategory("All Products")}
+            onClick={() => {dispatch({type:'all'});setProducts(productsCopy)}}
             className={`flex flex-col items-center min-w-[min-content] bg-primary ${
-              selectedCategory === "All Products"
+              state.category === "All Products"
                 ? "border-secondary"
                 : "border-transparent"
             } rounded-xl text-sm text-gray-700 font-medium py-4 px-4 shadow-sm hover:shadow-md justify-center text-center cursor-pointer border-2`}
@@ -145,9 +145,10 @@ export default function Products({ style }) {
           {categories.map((cat) => (
             <div
               key={cat.title}
-              onClick={() => setSelectedCategory(cat.title)}
+              onClick={() => {dispatch({type:cat.value});
+              setProducts(productsCopy.filter((p) =>p.category.includes(cat.value)));}}
               className={`flex flex-col items-center min-w-[min-content] bg-primary ${
-                selectedCategory === cat.title
+                state.category === cat.title
                   ? "border-secondary "
                   : "border-transparent"
               } rounded-xl py-4 px-4 shadow-sm hover:shadow-md cursor-pointer border-2`}

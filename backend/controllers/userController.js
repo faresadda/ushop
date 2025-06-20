@@ -299,6 +299,12 @@ const resendCode = asyncHandler(async (req, res) => {
 const addPhone = asyncHandler(async (req, res) => {
   const phone = req.body.phone;
   const id = req.params.id;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json(appError.createError(400, errors.array(), null));
+  }
   const user = await User.findById(id, { password: 0 });
   if (!user) {
     return res

@@ -57,44 +57,44 @@ export default function Dashboard() {
               icon={<FaEye />}
               label="Visitors"
               value={stats.visitors.toLocaleString()}
-              color="bg-gray-700"
+              color="bg-gray-400"
             />
             <StatCard
               icon={<FaChartBar />}
               label="Sales"
               value={stats.sales.toLocaleString()}
-              color="bg-blue-500"
+              color="bg-blue-400"
             />
             <StatCard
               icon={<FaBoxOpen />}
               label="Products"
               value={stats.products}
-              color="bg-red-500"
+              color="bg-red-400"
             />
             <StatCard
               icon={<FaMoneyBillWave />}
               label="Revenue"
               value={`$${stats.revenue.toLocaleString()}`}
-              color="bg-green-500"
+              color="bg-green-400"
             />
             <StatCard
               icon={<FaShoppingCart />}
               label="Orders"
               value={stats.orders}
-              color="bg-yellow-500"
+              color="bg-yellow-400"
             />
             <StatCard
               icon={<FaUsers />}
               label="Users"
               value={stats.users}
-              color="bg-purple-500"
+              color="bg-purple-400"
             />
           </div>
 
           {/* Chart Full Width */}
           <div className="bg-white rounded-xl shadow p-6 mb-6 flex justify-center">
             <div className="w-full" style={{ aspectRatio: "4 / 3" }}>
-              <h2 className="text-lg font-semibold mb-4 text-tertiary">
+              <h2 className="text-lg font-semibold mb-4 text-black">
                 Sales & Revenue
               </h2>
               <SalesRevenueChart data={chartData} />
