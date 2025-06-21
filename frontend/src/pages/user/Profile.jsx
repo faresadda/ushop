@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useProductsContext } from "../../context/productsContext";
 import {
   FaPlus,
   FaUser,
@@ -7,7 +6,7 @@ import {
   FaCog,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { MdOutlineSecurity, MdOutlinePayment, MdSafetyDivider } from "react-icons/md";
+import { MdOutlineSecurity, MdOutlinePayment } from "react-icons/md";
 import { BsBoxSeam } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { useUserContext } from "../../context/userContext";
@@ -51,7 +50,7 @@ export default function Profile() {
   const [passwordMessage, setPasswordMessage] = useState("");
   const [editMessage, setEditMessage] = useState("");
   const [deleteMessage, setDeleteMessage] = useState("");
-  const [phoneMessage, setPhoneMessage] = useState("")
+  const [phoneMessage, setPhoneMessage] = useState("");
 
   const [formData, setFormData] = useState({
     image: "",
@@ -118,8 +117,12 @@ export default function Profile() {
   };
 
   const updateUserFunction = async () => {
-    const res = await updateUser(id, 
-      {...formData,address: `${state} , ${city} , ${street}`}, user, profileImage);
+    const res = await updateUser(
+      id,
+      { ...formData, address: `${state} , ${city} , ${street}` },
+      user,
+      profileImage
+    );
     setIsLoading(false);
     if (res && res.status === "success") {
       setUser(res);
@@ -144,11 +147,11 @@ export default function Profile() {
         phone: res.data.phone || "",
         address: res.data.address || "",
       });
-      if(res.data.address){
-      const [state, city, street] = res.data.address.split(" , ");
-      setState(state);
-      setCity(city);
-      setStreet(street);
+      if (res.data.address) {
+        const [state, city, street] = res.data.address.split(" , ");
+        setState(state);
+        setCity(city);
+        setStreet(street);
       }
     };
 
@@ -180,12 +183,13 @@ export default function Profile() {
     setIsLoading(true);
     const res = await addPhone(id, formData.phone);
     setIsLoading(false);
-    if(res.status==='success'){
+    if (res.status === "success") {
       setUser(res);
       toast.success("Phone added successfully");
-    }
-    else{
-      setPhoneMessage(res.message)
+      setPhoneMessage(""); // Clear any previous error messages
+      setIsAddPhone(false); // Close the add phone form
+    } else {
+      setPhoneMessage(res.message);
     }
   };
 
@@ -194,12 +198,11 @@ export default function Profile() {
     setIsLoading(true);
     const res = await addAddress(id, a);
     setIsLoading(false);
-    if(res.status==="success"){
+    if (res.status === "success") {
       setUser(res);
       toast.success("Address added successfully");
-    }
-    else{
-      console.log(res.message)
+    } else {
+      console.log(res.message);
     }
   };
 
@@ -288,7 +291,7 @@ export default function Profile() {
                       type="text"
                       name="firstName"
                       value={formData.firstName}
-                      onChange={handleChange}
+                      onChange={e=>handleChange(e)}
                       className={`${
                         editMessage &&
                         typeof message === "object" &&
@@ -639,15 +642,23 @@ export default function Profile() {
                           </p>
                         ) : (
                           <div>
-                          <input
-                            type="number"
-                            name="phone"
-                            value={formData.phone}
-                            placeholder="Phone"
-                            onChange={handleChange}
-                            className={`w-full px-4 outline-0 py-2 border ${phoneMessage ? "border-red-200" : "border-gray-200"} rounded-lg mt-2`}
-                          />
-                          <p className="text-xs text-red-500 font-medium mt-2 px-4">{phoneMessage[0].msg}</p>
+                            <input
+                              type="number"
+                              name="phone"
+                              value={formData.phone}
+                              placeholder="Phone"
+                              onChange={handleChange}
+                              className={`w-full px-4 outline-0 py-2 border ${
+                                phoneMessage
+                                  ? "border-red-200"
+                                  : "border-gray-200"
+                              } rounded-lg mt-2`}
+                            />
+                            {phoneMessage && (
+                              <p className="text-xs text-red-500 font-medium mt-2 px-4">
+                                {phoneMessage[0].msg}
+                              </p>
+                            )}
                           </div>
                         )}
                       </div>
@@ -655,7 +666,10 @@ export default function Profile() {
                         {!isAddPhone ? (
                           <button
                             className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                            onClick={() => setIsAddPhone(true)}
+                            onClick={() => {
+                              setIsAddPhone(true);
+                              setPhoneMessage(""); // Clear any previous error messages
+                            }}
                           >
                             <IoIosAdd />
                             Add Phone
@@ -669,7 +683,10 @@ export default function Profile() {
                               Save {isLoading && <LoadingSpinner />}
                             </button>
                             <button
-                              onClick={() => setIsAddPhone(false)}
+                              onClick={() => {
+                                setIsAddPhone(false);
+                                setPhoneMessage(""); // Clear error message when canceling
+                              }}
                               className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 flex-1"
                             >
                               Cancel
@@ -818,10 +835,8 @@ export default function Profile() {
                     <div key={i} className="space-y-5">
                       <div className="flex justify-between items-center">
                         <div className="flex gap-2 text-sm text-gray-600 mt-2 flex-col sm:flex-row sm:gap-10">
-                        <p>
-                          Order #{order._id.toUpperCase().slice(-6)}
-                        </p>
-                        <p>Total : {order.totalPrice}$</p>
+                          <p>Order #{order._id.toUpperCase().slice(-6)}</p>
+                          <p>Total : {order.totalPrice}$</p>
                         </div>
                         <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
                           {order.status}
@@ -849,10 +864,7 @@ export default function Profile() {
                                   Quantity : {item.quantity}
                                 </p>
                                 <p className="text-gray-900 font-medium">
-                                  $
-                                  {item.productPrice.toFixed(
-                                    2
-                                  )}
+                                  ${item.productPrice.toFixed(2)}
                                 </p>
                               </div>
                             </div>

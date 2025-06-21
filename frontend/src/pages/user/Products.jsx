@@ -158,6 +158,7 @@ export default function Products({ style }) {
                   src={cat.img}
                   alt={cat.title}
                   className="max-h-full max-w-full object-contain"
+                  loading="lazy"
                 />
               </div>
               <span className="text-xs md:text-sm text-gray-700 text-center font-medium">
@@ -219,6 +220,7 @@ export default function Products({ style }) {
 
                         <div className="overflow-hidden rounded-xl w-full h-40">
                           <img
+                            loading="lazy"
                             src={`${import.meta.env.VITE_BASE_URL}${
                               product.image
                             }`}

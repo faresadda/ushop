@@ -27,6 +27,7 @@ export default function Profile() {
   const [passwordMessage, setPasswordMessage] = useState("");
   const [editMessage, setEditMessage] = useState("");
   const [deleteMessage, setDeleteMessage] = useState("");
+  const [phoneMessage,setPhoneMessage] =useState()
 
   const [formData, setFormData] = useState({
     image:"",
@@ -134,9 +135,14 @@ export default function Profile() {
     setIsLoading(true);
     const res = await addPhone(id, formData.phone);
     setIsLoading(false);
-    setUser(res);
-    toast.success("Phone added successfully");
-    setIsAddPhone("");
+    if(res.status==="success"){
+      setUser(res);
+      toast.success("Phone added successfully");
+      setIsAddPhone("");
+    }
+    else{
+      setPhoneMessage(res.message)
+    }
   };
 
   const addAddressFunction = async () => {
@@ -551,8 +557,8 @@ export default function Profile() {
               <section className="mt-8 space-y-4">
                 {!user.data.phone && (
                   <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="flex justify-between flex-col md:flex-row md:items-center gap-5">
-                      <div>
+                    <div className="flex justify-between flex-col md:flex-row md:items-end gap-5">
+                      <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900">
                           Phone Number
                         </h3>
@@ -561,21 +567,35 @@ export default function Profile() {
                             Add your phone number for better communication
                           </p>
                         ) : (
-                          <input
-                            type="number"
-                            name="phone"
-                            value={formData.phone}
-                            placeholder="Phone"
-                            onChange={handleChange}
-                            className="w-full px-4 outline-0 py-2 border border-gray-200 rounded-lg mt-2"
-                          />
+                          <div>
+                            <input
+                              type="number"
+                              name="phone"
+                              value={formData.phone}
+                              placeholder="Phone"
+                              onChange={handleChange}
+                              className={`w-full px-4 outline-0 py-2 border ${
+                                phoneMessage
+                                  ? "border-red-200"
+                                  : "border-gray-200"
+                              } rounded-lg mt-2`}
+                            />
+                            {phoneMessage && (
+                              <p className="text-xs text-red-500 font-medium mt-2 px-4">
+                                {phoneMessage[0]?.msg}
+                              </p>
+                            )}
+                          </div>
                         )}
                       </div>
                       <div>
                         {!isAddPhone ? (
                           <button
                             className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                            onClick={() => setIsAddPhone(true)}
+                            onClick={() => {
+                              setIsAddPhone(true);
+                              setPhoneMessage(""); // Clear any previous error messages
+                            }}
                           >
                             <IoIosAdd />
                             Add Phone
@@ -589,7 +609,10 @@ export default function Profile() {
                               Save {isLoading && <LoadingSpinner />}
                             </button>
                             <button
-                              onClick={() => setIsAddPhone(false)}
+                              onClick={() => {
+                                setIsAddPhone(false);
+                                setPhoneMessage(""); // Clear error message when canceling
+                              }}
                               className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 flex-1"
                             >
                               Cancel
@@ -803,148 +826,7 @@ export default function Profile() {
           </div>
         );
 
-      
-        return (
-          <div className="bg-primary rounded-xl shadow-sm p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">
-              Payment Methods
-            </h2>
-            <div className="space-y-6">
-              <div className="border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-8 bg-blue-600 rounded flex items-center justify-center">
-                      <span className="text-white font-bold">VISA</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        •••• •••• •••• 4242
-                      </p>
-                      <p className="text-sm text-gray-600">Expires 12/24</p>
-                    </div>
-                  </div>
-                  <button className="text-red-600 hover:text-red-700">
-                    Remove
-                  </button>
-                </div>
-              </div>
-
-              <button className="w-full px-2 py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors">
-                + Add New Payment Method
-              </button>
-            </div>
-          </div>
-        );
-
-      
-        return (
-          <div className="bg-primary rounded-xl shadow-sm p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">
-              Account Settings
-            </h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-medium text-gray-900 mb-4">
-                  Notifications
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        Email Notifications
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Receive updates about your orders
-                      </p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        defaultChecked
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
-                    </label>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        SMS Notifications
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Receive text messages about your orders
-                      </p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" className="sr-only peer" />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t pt-6">
-                <h3 className="font-medium text-gray-900 mb-4">Language</h3>
-                <select className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-black">
-                  <option value="en">English</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                </select>
-              </div>
-
-              <button
-                onClick={() => {
-                  setDeleteAccount(true);
-                }}
-                className="flex items-center pt-8 gap-2 text-red-600 hover:text-red-700 border-t-1 font-medium border-gray-900 w-full "
-              >
-                <FaRegTrashAlt />
-                Delete account
-              </button>
-              {deleteAccount && (
-                  <form
-                    className="flex w-full gap-4 flex-col sm:flex-row"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      deleteUserFunction();
-                    }}
-                  >
-                    <div className="flex-1 w-full">
-                    <PasswordInput
-                      placeholder="password"
-                      password={currentPassword}
-                      setPassword={setCurrentPassword}
-                      style={`${deleteMessage ? 'border-red-200' : 'border-gray-200'}`}
-                    />
-                    {deleteMessage && (
-                    <p className="text-xs text-red-500 mt-2 px-4 font-medium">
-                      {deleteMessage}
-                    </p>
-                  )}
-                  </div>
-                  <div className="space-x-4 flex w-full sm:w-fit">
-                    <button
-                      className="bg-black text-white px-4 py-2 rounded-lg flex-1 flex items-center justify-center gap-2"
-                      type="submit"
-                    >
-                      Confirm {isLoading && <LoadingSpinner />}
-                    </button>
-                    <button
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg flex-1"
-                      onClick={() => {
-                        setDeleteAccount(false);
-                        setCurrentPassword('')
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  </form>
-              )}
-            </div>
-          </div>
-        );
-
+    
       default:
         return null;
     }
